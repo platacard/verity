@@ -1,11 +1,18 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 import { MountainIcon } from 'lucide-react';
 
+import { auth } from '@verity/auth/server';
 import { Button } from '@verity/ui/button';
 import { Input } from '@verity/ui/input';
 
-export default function Component() {
+export default async function Component() {
+  const session = await auth();
+  if (!session) {
+    redirect('/api/auth/signin');
+  }
+
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <header className="px-4 lg:px-6 h-14 flex items-center">

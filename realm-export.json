@@ -1,0 +1,31 @@
+{
+  "id": "verity",
+  "realm": "verity",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "verity_client",
+      "secret": "veritysecret",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "redirectUris": ["http://localhost:3000/*"]
+    }
+  ],
+  "users": [
+    {
+      "username": "verity",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Rootus",
+      "lastName": "Adminus",
+      "email": "verity@mail.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "verity"
+        }
+      ],
+      "realmRoles": ["ADMIN"]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  keycloakdb:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    volumes:
+      - keycloakdb_data:/var/lib/postgresql/data
+    networks:
+      - keycloak-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command:
+      - start-dev
+      - -Dkeycloak.migration.action=import
+      - -Dkeycloak.migration.provider=singleFile
+      - -Dkeycloak.migration.file=/opt/keycloak/data/import/realm-export.json
+      - -Dkeycloak.migration.strategy=IGNORE_EXISTING
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloakdb
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+    ports:
+      - 8080:8080
+    depends_on:
+      - keycloakdb
+    networks:
+      - keycloak-network
+
+  verity_db:
+    image: postgres:latest
+    container_name: verity_db
+    environment:
+      POSTGRES_DB: verity
+      POSTGRES_USER: verity
+      POSTGRES_PASSWORD: verity
+    volumes:
+      - verity_db_data:/var/lib/postgresql/data
+    networks:
+      - keycloak-network
+    ports:
+      - 5432:5432
+
+networks:
+  keycloak-network:
+    driver: bridge
+
+volumes:
+  keycloakdb_data:
+  verity_db_data:
