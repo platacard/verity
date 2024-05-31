@@ -14,7 +14,13 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@verity/ui": ["libs/ui/src/index.ts"],
+      "@verity/ui/*": ["libs/ui/src/lib/*"],
+      "@verity/ui/server": ["libs/ui/src/server.ts"],
+      "@verity/utils": ["libs/utils/src/index.ts"],
+      "@verity/utils/server": ["libs/utils/src/server.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -1,3 +1,29 @@
 {
-  "singleQuote": true
+  "singleQuote": true,
+  "printWidth": 100,
+  "overrides": [
+    {
+      "files": "*.md(x)?",
+      "options": {
+        "printWidth": 100,
+        "proseWrap": "always"
+      }
+    }
+  ],
+  "plugins": [
+    "prettier-plugin-packagejson",
+    "prettier-plugin-tailwindcss",
+    "@ianvs/prettier-plugin-sort-imports"
+  ],
+  "importOrder": [
+    "^react$",
+    "next",
+    "",
+    "<BUILTIN_MODULES>",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@(verity)/(.*)$",
+    "",
+    "^[./]"
+  ]
 }
