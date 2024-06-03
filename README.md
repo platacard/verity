@@ -43,17 +43,23 @@ docker-compose up -d
 npm install
 ```
 
-5. Start the development server:
+5. Generate the Prisma client:
+
+```bash
+npm run prisma:gen
+```
+
+6. Start the development server:
 
 ```bash
 npm start
 ```
 
-6. Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
+7. Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
 
-7. Login with the following credentials:
+8. Login with the following credentials:
 
 - **Username:** verity
 - **Password:** verity
 
-8. You're all set! 🚀
+9. You're all set! 🚀
