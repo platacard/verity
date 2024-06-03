@@ -17,6 +17,7 @@
     "paths": {
       "@verity/auth": ["libs/auth/src/index.ts"],
       "@verity/auth/server": ["libs/auth/src/server.ts"],
+      "@verity/deps-api": ["libs/deps-api/src/server.ts"],
       "@verity/ui": ["libs/ui/src/index.ts"],
       "@verity/ui/*": ["libs/ui/src/lib/*"],
       "@verity/ui/server": ["libs/ui/src/server.ts"],
