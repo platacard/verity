@@ -1,5 +1,7 @@
-import { getAppDepsHandler } from '@verity/deps-api';
+import { NextRequest } from 'next/server';
 
-export async function GET(request: Request) {
-  return getAppDepsHandler(request);
+import { getApplicationDependencies } from '@verity/deps-api';
+
+export async function GET(request: NextRequest) {
+  return getApplicationDependencies(request);
 }

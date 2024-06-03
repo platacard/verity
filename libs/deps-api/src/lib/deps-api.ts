@@ -1,17 +1,16 @@
-import { PrismaClient } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
 
-import { getQueryParams } from '@verity/utils';
+import { prisma } from '@verity/prisma';
 
-const prisma = new PrismaClient();
-
-export const getAppDepsHandler = async (request: Request) => {
-  const { app, version } = getQueryParams(request);
+export const getApplicationDependencies = async (request: NextRequest) => {
+  const app = request.nextUrl.searchParams.get('app');
+  const version = request.nextUrl.searchParams.get('version');
 
   if (!app || !version) {
     return new Response('app and version params are required', { status: 400 });
   }
 
-  const rawAppVersion = await prisma.appVersion.findFirst({
+  const rawAppVersion = await prisma.version.findFirst({
     where: {
       appId: app,
       value: version,
@@ -34,18 +33,13 @@ export const getAppDepsHandler = async (request: Request) => {
     return new Response('app version not found', { status: 404 });
   }
 
-  const dependencies = rawAppVersion.dependencies.reduce((acc, dep) => {
-    const appId = dep.dependencyAppVersion?.appId;
+  const dependencies = rawAppVersion.dependencies.reduce(
+    (acc, dep) => ({
+      ...acc,
+      [dep.dependencyAppVersion.appId]: dep.dependencyAppVersion.value,
+    }),
+    {},
+  );
 
-    if (!appId) {
-      return acc;
-    } else {
-      return {
-        ...acc,
-        [appId]: dep.dependencyAppVersion?.value,
-      };
-    }
-  }, {});
-
-  return new Response(JSON.stringify(dependencies), { status: 200 });
+  return NextResponse.json(dependencies);
 };
