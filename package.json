@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
+    "prisma:gen": "nx prisma:generate",
     "start": "nx dev web"
   },
   "dependencies": {
