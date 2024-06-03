@@ -8,6 +8,9 @@
     },
     "prisma:generate": {
       "command": "npx prisma generate"
+    },
+    "prisma:reset": {
+      "command": "npx prisma migrate reset --force"
     }
   }
 }
