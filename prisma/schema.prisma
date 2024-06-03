@@ -16,7 +16,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
-  Authenticator Authenticator[]
+  authenticator Authenticator[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
