@@ -1,0 +1,9 @@
+{
+  "name": "crud-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/crud/app/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project crud-app --web",
+  "targets": {}
+}

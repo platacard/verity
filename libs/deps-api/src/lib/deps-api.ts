@@ -30,7 +30,7 @@ export const getApplicationDependencies = async (request: NextRequest) => {
   });
 
   if (!rawAppVersion) {
-    return new Response('app version not found', { status: 404 });
+    return NextResponse.json({ error: 'app version not found' }, { status: 404 });
   }
 
   const dependencies = rawAppVersion.dependencies.reduce(
