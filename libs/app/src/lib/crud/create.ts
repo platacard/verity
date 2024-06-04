@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 
+import { App } from '@prisma/client';
+import { z } from 'zod';
+
 import { prisma } from '@verity/prisma';
 
-import { App, CreateAppDto, RawApp } from '../models';
+import { createAppSchema } from './schemas';
 
-export const createApp = async (data: CreateAppDto) => {
+export const createApp = async (data: z.infer<typeof createAppSchema>) => {
   const { id } = data;
 
   if (!id) {
@@ -12,13 +15,13 @@ export const createApp = async (data: CreateAppDto) => {
   }
 
   try {
-    const app: RawApp = await prisma.app.create({
+    const app: App = await prisma.app.create({
       data: {
         id,
       },
     });
 
-    return NextResponse.json(new App(app));
+    return NextResponse.json(app);
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
