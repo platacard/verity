@@ -8,16 +8,18 @@ import { prisma } from '@verity/prisma';
 import { createAppSchema } from './schemas';
 
 export const createApp = async (data: z.infer<typeof createAppSchema>) => {
-  const { id } = data;
+  let parsedData: z.infer<typeof createAppSchema>;
 
-  if (!id) {
-    return NextResponse.json({ error: 'id is required' }, { status: 400 });
+  try {
+    parsedData = createAppSchema.parse(data);
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 400 });
   }
 
   try {
     const app: App = await prisma.app.create({
       data: {
-        id,
+        id: parsedData.id,
       },
     });
 
