@@ -1,13 +1,9 @@
 import { NextRequest } from 'next/server';
 
-import { createApp, getApps } from '@verity/app';
-
-export async function GET() {
-  return getApps();
-}
+import { createVersion } from '@verity/version';
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
 
-  return createApp(data);
+  return createVersion(data);
 }
