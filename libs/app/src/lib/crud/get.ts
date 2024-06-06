@@ -4,8 +4,23 @@ import { App } from '@prisma/client';
 
 import { prisma } from '@verity/prisma';
 
+import { AppWithVersionsAndDeps } from '../models';
+
 export const getApps = async () => {
-  const apps: App[] = (await prisma.app.findMany()) ?? [];
+  const apps: AppWithVersionsAndDeps[] =
+    (await prisma.app.findMany({
+      include: {
+        versions: {
+          include: {
+            dependencies: {
+              include: {
+                dependencyAppVersion: true,
+              },
+            },
+          },
+        },
+      },
+    })) ?? [];
 
   return NextResponse.json(apps);
 };
