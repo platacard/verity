@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@verity/admin-panel": ["libs/admin-panel/src/index.ts"],
+      "@verity/admin-panel/server": ["libs/admin-panel/src/server.ts"],
       "@verity/app": ["libs/app/src/index.ts"],
       "@verity/auth": ["libs/auth/src/index.ts"],
       "@verity/auth/server": ["libs/auth/src/server.ts"],
