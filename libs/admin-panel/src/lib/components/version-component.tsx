@@ -21,42 +21,42 @@ export function VersionComponent({ version, onDelete }: VersionComponentProps) {
     setVersion(version);
   }, [version]);
 
-  const handleCreateDependency = (dependencyAppVersionId: number) => {
-    fetch(`api/dependencies`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        dependantAppVersionId: currentVersion.id,
-        dependencyAppVersionId,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data: DependencyWithAppVersion) => {
-        const updVersion: VersionWithDeps = {
-          ...currentVersion,
-          dependencies: [...currentVersion.dependencies, data],
-        };
+  const handleCreateDependency = async (dependencyAppVersionId: number) => {
+    try {
+      const response = await fetch('api/dependencies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dependantAppVersionId: currentVersion.id,
+          dependencyAppVersionId,
+        }),
+      });
+      const data: DependencyWithAppVersion = await response.json();
 
-        setVersion(updVersion);
-      })
-      .catch((error) => console.error('Error:', error));
+      const updVersion: VersionWithDeps = {
+        ...currentVersion,
+        dependencies: [...currentVersion.dependencies, data],
+      };
+      setVersion(updVersion);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
-  const handleDeleteDependency = (id: number) => {
-    fetch(`api/dependencies/${id}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        const updVersion: VersionWithDeps = {
-          ...currentVersion,
-          dependencies: currentVersion.dependencies.filter((dep) => dep.id !== id),
-        };
+  const handleDeleteDependency = async (id: number) => {
+    try {
+      await fetch(`api/dependencies/${id}`, { method: 'DELETE' });
 
-        setVersion(updVersion);
-      })
-      .catch((error) => console.error('Error:', error));
+      const updVersion: VersionWithDeps = {
+        ...currentVersion,
+        dependencies: currentVersion.dependencies.filter((dep) => dep.id !== id),
+      };
+      setVersion(updVersion);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -89,7 +89,7 @@ export function VersionComponent({ version, onDelete }: VersionComponentProps) {
             <Card key={dep.id} className="px-4 py-2 relative">
               <div className="absolute right-1 top-1">
                 <ConfirmationModal
-                  title={`Remove dependency from: ${dep.dependencyAppVersion.id}`}
+                  title={`Remove dependency from: ${dep.dependencyAppVersion.appId}`}
                   message={'You are going to remove dependency. Are you sure?'}
                   onConfirm={() => handleDeleteDependency(dep.id)}
                 />

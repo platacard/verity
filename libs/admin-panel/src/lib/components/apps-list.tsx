@@ -8,34 +8,44 @@ import { AppComponent } from './app-component';
 import { InputModal } from './input-modal';
 
 export default function AppsList() {
-  const [apps, setItems] = useState([] as AppWithVersionsAndDeps[]);
+  const [apps, setApps] = useState([] as AppWithVersionsAndDeps[]);
 
-  useEffect(() => updateAppList(), []);
+  useEffect(() => void updateAppList(), []);
 
-  const updateAppList = () => {
-    fetch('api/apps')
-      .then((response) => response.json())
-      .then((data: AppWithVersionsAndDeps[]) => setItems(data))
-      .catch((error) => console.error('Error:', error));
+  const updateAppList = async () => {
+    try {
+      const response = await fetch('api/apps');
+      const data: AppWithVersionsAndDeps[] = await response.json();
+
+      setApps(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
-  const handleAddApp = (id: string) => {
-    fetch('api/apps', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    })
-      .then((response) => response.json())
-      .then((data: AppWithVersionsAndDeps) => setItems([...apps, { ...data, versions: [] }]))
-      .catch((error) => console.error('Error:', error));
+  const handleAddApp = async (id: string) => {
+    try {
+      const response = await fetch('api/apps', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data: AppWithVersionsAndDeps = await response.json();
+
+      setApps([...apps, { ...data, versions: [] }]);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
-  const handleDeleteApp = (id: string) => {
-    fetch(`api/apps/${id}`, {
-      method: 'DELETE',
-    })
-      .then(() => updateAppList())
-      .catch((error) => console.error('Error:', error));
+  const handleDeleteApp = async (id: string) => {
+    try {
+      await fetch(`api/apps/${id}`, { method: 'DELETE' });
+
+      void updateAppList();
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (

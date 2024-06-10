@@ -30,23 +30,39 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
   const [versions, setVersions] = useState<Version[]>([]);
 
   useEffect(() => {
-    resetState();
+    const updateAppsIds = async () => {
+      try {
+        const response = await fetch('api/apps');
+        const data: App[] = await response.json();
 
-    fetch('api/apps')
-      .then((response) => response.json())
-      .then((data: App[]) => {
         const ids = data.map(({ id }) => id).filter((id) => id !== currentAppId);
         setAppsIds(ids);
-      })
-      .catch((error) => console.error('Error:', error));
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    if (isOpen) {
+      void updateAppsIds();
+    } else {
+      resetState();
+    }
   }, [isOpen]);
 
   useEffect(() => {
+    const updateVersions = async () => {
+      try {
+        const response = await fetch(`api/apps/${appId}/versions`);
+        const data: Version[] = await response.json();
+
+        setVersions(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
     if (appId) {
-      fetch(`api/apps/${appId}/versions`)
-        .then((response) => response.json())
-        .then((data: Version[]) => setVersions(data))
-        .catch((error) => console.error('Error:', error));
+      void updateVersions();
     }
   }, [appId]);
 
@@ -63,12 +79,10 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
   };
 
   const resetState = () => {
-    if (!isOpen) {
-      setAppId(null);
-      setVersion(null);
-      setAppsIds([]);
-      setVersions([]);
-    }
+    setAppId(null);
+    setVersion(null);
+    setAppsIds([]);
+    setVersions([]);
   };
 
   return (

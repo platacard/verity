@@ -16,34 +16,38 @@ export interface AppComponentProps {
 }
 
 export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps) {
-  const [application, setItem] = useState(app);
+  const [application, setApplication] = useState(app);
 
   useEffect(() => {
-    setItem(app);
+    setApplication(app);
   }, [app]);
 
-  const handleCreateVersion = (version: string) => {
-    fetch('api/versions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ appId: app.id, value: version }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setItem({
-          ...application,
-          versions: [...application.versions, { ...data, dependencies: [] }],
-        });
-      })
-      .catch((error) => console.error('Error:', error));
+  const handleCreateVersion = async (version: string) => {
+    try {
+      const response = await fetch('api/versions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ appId: app.id, value: version }),
+      });
+      const data = await response.json();
+
+      setApplication({
+        ...application,
+        versions: [...application.versions, { ...data, dependencies: [] }],
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
-  const handleDeleteVersion = (id: number) => {
-    fetch(`api/versions/${id}`, {
-      method: 'DELETE',
-    })
-      .then(() => updateAppList())
-      .catch((error) => console.error('Error:', error));
+  const handleDeleteVersion = async (id: number) => {
+    try {
+      await fetch(`api/versions/${id}`, { method: 'DELETE' });
+
+      updateAppList();
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
