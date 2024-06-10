@@ -1,34 +1,112 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import { DependencyWithAppVersion } from '@verity/dependency';
 import { Card } from '@verity/ui/card';
 import { VersionWithDeps } from '@verity/version';
 
-export function VersionComponent(version: VersionWithDeps) {
+import { ConfirmationModal } from './confirmation-modal';
+import { DependencyModal } from './dependency-modal';
+
+export interface VersionComponentProps {
+  readonly version: VersionWithDeps;
+  readonly onDelete: (id: number) => void;
+}
+
+export function VersionComponent({ version, onDelete }: VersionComponentProps) {
+  const [currentVersion, setVersion] = useState<VersionWithDeps>(version);
+
+  useEffect(() => {
+    setVersion(version);
+  }, [version]);
+
+  const handleCreateDependency = (dependencyAppVersionId: number) => {
+    fetch(`api/dependencies`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        dependantAppVersionId: currentVersion.id,
+        dependencyAppVersionId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data: DependencyWithAppVersion) => {
+        const updVersion: VersionWithDeps = {
+          ...currentVersion,
+          dependencies: [...currentVersion.dependencies, data],
+        };
+
+        setVersion(updVersion);
+      })
+      .catch((error) => console.error('Error:', error));
+  };
+
+  const handleDeleteDependency = (id: number) => {
+    fetch(`api/dependencies/${id}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        const updVersion: VersionWithDeps = {
+          ...currentVersion,
+          dependencies: currentVersion.dependencies.filter((dep) => dep.id !== id),
+        };
+
+        setVersion(updVersion);
+      })
+      .catch((error) => console.error('Error:', error));
+  };
+
   return (
-    <Card className="px-4 py-1">
+    <Card className="px-4 py-2 relative">
+      <div className="absolute right-1 top-1">
+        <ConfirmationModal
+          title={`Remove version: ${currentVersion.value}`}
+          message={
+            'You are going to completely remove version with all dependencies. Are you sure?'
+          }
+          onConfirm={() => onDelete(currentVersion.id)}
+        />
+      </div>
+
       <div>
-        <span className="font-bold">Version:</span> {version.value}
+        <span className="font-semibold">Version:</span> {currentVersion.value}
       </div>
       <div>
-        <span className="font-bold">Created:</span> {new Date(version.createdAt).toISOString()}
+        <span className="font-semibold">Created:</span>{' '}
+        {new Date(currentVersion.createdAt).toISOString()}
       </div>
       <div>
-        <span className="font-bold">Built:</span>{' '}
-        {version.builtAt ? new Date(version.builtAt).toISOString() : 'not built'}
+        <span className="font-semibold">Built:</span>{' '}
+        {currentVersion.builtAt ? new Date(currentVersion.builtAt).toISOString() : 'not built'}
       </div>
       <div>
-        <span className="font-bold">Dependencies:</span>
-        <div className="px-4 flex flex-col">
-          {version.dependencies.map((dep) => (
-            <Card key={dep.id} className="px-4 py-1">
+        <span className="font-semibold">Dependencies:</span>
+        <div className="px-4 flex flex-col gap-2 py-2">
+          {currentVersion.dependencies.map((dep) => (
+            <Card key={dep.id} className="px-4 py-2 relative">
+              <div className="absolute right-1 top-1">
+                <ConfirmationModal
+                  title={`Remove dependency from: ${dep.dependencyAppVersion.id}`}
+                  message={'You are going to remove dependency. Are you sure?'}
+                  onConfirm={() => handleDeleteDependency(dep.id)}
+                />
+              </div>
               <div>
                 <div>
-                  <span className="font-bold block">App:</span> {dep.dependencyAppVersion.appId}
+                  <span className="font-bold">App:</span> {dep.dependencyAppVersion.appId}
                 </div>
                 <div>
-                  <span className="font-bold block">Version:</span> {dep.dependencyAppVersion.value}
+                  <span className="font-bold">Version:</span> {dep.dependencyAppVersion.value}
                 </div>
               </div>
             </Card>
           ))}
+        </div>
+        <div className="px-4">
+          <DependencyModal currentAppId={version.appId} onFormSubmit={handleCreateDependency} />
         </div>
       </div>
     </Card>

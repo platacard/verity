@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { Dependency } from '@prisma/client';
 import { z } from 'zod';
 
 import { prisma } from '@verity/prisma';
 
+import { DependencyWithAppVersion } from '../models';
 import { createDependencySchema } from './schemas';
 
 export const createDependency = async (data: z.infer<typeof createDependencySchema>) => {
@@ -17,10 +17,13 @@ export const createDependency = async (data: z.infer<typeof createDependencySche
   }
 
   try {
-    const dependency: Dependency = await prisma.dependency.create({
+    const dependency: DependencyWithAppVersion = await prisma.dependency.create({
       data: {
         dependantAppVersionId: parsedData.dependantAppVersionId,
         dependencyAppVersionId: parsedData.dependencyAppVersionId,
+      },
+      include: {
+        dependencyAppVersion: true,
       },
     });
 
