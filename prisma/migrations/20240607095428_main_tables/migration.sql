@@ -37,7 +37,7 @@ CREATE UNIQUE INDEX "Version_id_key" ON "Version"("id");
 CREATE UNIQUE INDEX "Dependency_id_key" ON "Dependency"("id");
 
 -- AddForeignKey
-ALTER TABLE "Version" ADD CONSTRAINT "Version_appId_fkey" FOREIGN KEY ("appId") REFERENCES "App"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Version" ADD CONSTRAINT "Version_appId_fkey" FOREIGN KEY ("appId") REFERENCES "App"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Dependency" ADD CONSTRAINT "Dependency_dependantAppVersionId_fkey" FOREIGN KEY ("dependantAppVersionId") REFERENCES "Version"("id") ON DELETE CASCADE ON UPDATE CASCADE;

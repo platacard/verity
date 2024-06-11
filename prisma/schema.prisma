@@ -92,7 +92,7 @@ model Version {
   dependencies Dependency[] @relation("AppVersionDependency")
   dependsOn    Dependency[] @relation("AppVersionDependsOn")
 
-  app App @relation(fields: [appId], references: [id])
+  app App @relation(fields: [appId], references: [id], onDelete: Cascade)
 
   @@id([appId, value])
 }

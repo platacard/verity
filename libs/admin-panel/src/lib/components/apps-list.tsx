@@ -3,31 +3,77 @@
 import { useEffect, useState } from 'react';
 
 import { AppWithVersionsAndDeps } from '@verity/app';
-import { Button } from '@verity/ui/button';
 
 import { AppComponent } from './app-component';
+import { InputModal } from './input-modal';
 
 export default function AppsList() {
-  const [apps, setItems] = useState([] as AppWithVersionsAndDeps[]);
+  const [apps, setApps] = useState([] as AppWithVersionsAndDeps[]);
 
-  useEffect(() => {
-    fetch('api/apps')
-      .then((response) => response.json())
-      .then((data: AppWithVersionsAndDeps[]) => setItems(data))
-      .catch((error) => console.error('Error:', error));
-  }, []);
+  useEffect(() => void updateAppList(), []);
+
+  const updateAppList = async () => {
+    try {
+      const response = await fetch('api/apps');
+      const data: AppWithVersionsAndDeps[] = await response.json();
+
+      setApps(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleAddApp = async (id: string) => {
+    try {
+      const response = await fetch('api/apps', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data: AppWithVersionsAndDeps = await response.json();
+
+      setApps([...apps, { ...data, versions: [] }]);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleDeleteApp = async (id: string) => {
+    try {
+      await fetch(`api/apps/${id}`, { method: 'DELETE' });
+
+      void updateAppList();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 md:px-0">
-      <div className="grid gap-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Apps</h1>
-          <Button>Add App</Button>
-        </div>
-        <div className="grid gap-4">
-          {apps.map((item) => (
-            <AppComponent key={item.id} {...item} />
-          ))}
+    <div>
+      <div className="w-full max-w-3xl mx-auto px-4 md:px-0">
+        <div className="grid gap-6">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold li">Apps</h1>
+            <InputModal
+              config={{
+                buttonLabel: '+ Create App',
+                title: 'Create new App',
+                description: 'Create new application instance',
+                inputLabel: 'Name (appId):',
+              }}
+              onFormSubmit={handleAddApp}
+            />
+          </div>
+          <div className="grid gap-4">
+            {apps.map((item) => (
+              <AppComponent
+                key={item.id}
+                app={item}
+                updateAppList={updateAppList}
+                onDelete={handleDeleteApp}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
