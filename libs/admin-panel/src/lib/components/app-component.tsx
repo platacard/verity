@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { AppWithVersionsAndDeps } from '@verity/app';
 import { Card, CardContent, CardHeader } from '@verity/ui/card';
 
+import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { ConfirmationModal } from './confirmation-modal';
 import { InputModal } from './input-modal';
 import { VersionComponent } from './version-component';
@@ -17,6 +18,7 @@ export interface AppComponentProps {
 
 export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps) {
   const [application, setApplication] = useState(app);
+  const showFetchError = useFetchErrorToast();
 
   useEffect(() => {
     setApplication(app);
@@ -31,22 +33,28 @@ export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps
       });
       const data = await response.json();
 
+      if (!response.ok) return showFetchError();
+
       setApplication({
         ...application,
         versions: [...application.versions, { ...data, dependencies: [] }],
       });
     } catch (error) {
       console.error('Error:', error);
+      showFetchError();
     }
   };
 
   const handleDeleteVersion = async (id: number) => {
     try {
-      await fetch(`api/versions/${id}`, { method: 'DELETE' });
+      const response = await fetch(`api/versions/${id}`, { method: 'DELETE' });
+
+      if (!response.ok) return showFetchError();
 
       updateAppList();
     } catch (error) {
       console.error('Error:', error);
+      showFetchError();
     }
   };
 

@@ -6,6 +6,7 @@ import { DependencyWithAppVersion } from '@verity/dependency';
 import { Card } from '@verity/ui/card';
 import { VersionWithDeps } from '@verity/version';
 
+import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { ConfirmationModal } from './confirmation-modal';
 import { DependencyModal } from './dependency-modal';
 
@@ -16,6 +17,7 @@ export interface VersionComponentProps {
 
 export function VersionComponent({ version, onDelete }: VersionComponentProps) {
   const [currentVersion, setVersion] = useState<VersionWithDeps>(version);
+  const showFetchError = useFetchErrorToast();
 
   useEffect(() => {
     setVersion(version);
@@ -35,6 +37,8 @@ export function VersionComponent({ version, onDelete }: VersionComponentProps) {
       });
       const data: DependencyWithAppVersion = await response.json();
 
+      if (!response.ok) return showFetchError();
+
       const updVersion: VersionWithDeps = {
         ...currentVersion,
         dependencies: [...currentVersion.dependencies, data],
@@ -42,12 +46,15 @@ export function VersionComponent({ version, onDelete }: VersionComponentProps) {
       setVersion(updVersion);
     } catch (error) {
       console.error('Error:', error);
+      showFetchError();
     }
   };
 
   const handleDeleteDependency = async (id: number) => {
     try {
-      await fetch(`api/dependencies/${id}`, { method: 'DELETE' });
+      const response = await fetch(`api/dependencies/${id}`, { method: 'DELETE' });
+
+      if (!response.ok) return showFetchError();
 
       const updVersion: VersionWithDeps = {
         ...currentVersion,
@@ -56,6 +63,7 @@ export function VersionComponent({ version, onDelete }: VersionComponentProps) {
       setVersion(updVersion);
     } catch (error) {
       console.error('Error:', error);
+      showFetchError();
     }
   };
 
