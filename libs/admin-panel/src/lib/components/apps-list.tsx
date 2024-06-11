@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 
 import { AppWithVersionsAndDeps } from '@verity/app';
 
+import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { AppComponent } from './app-component';
 import { InputModal } from './input-modal';
 
 export default function AppsList() {
   const [apps, setApps] = useState([] as AppWithVersionsAndDeps[]);
+  const showFetchError = useFetchErrorToast();
 
   useEffect(() => void updateAppList(), []);
 
@@ -17,9 +19,12 @@ export default function AppsList() {
       const response = await fetch('api/apps');
       const data: AppWithVersionsAndDeps[] = await response.json();
 
+      if (!response.ok) return showFetchError();
+
       setApps(data);
     } catch (error) {
       console.error('Error:', error);
+      showFetchError();
     }
   };
 
@@ -32,9 +37,12 @@ export default function AppsList() {
       });
       const data: AppWithVersionsAndDeps = await response.json();
 
+      if (!response.ok) return showFetchError();
+
       setApps([...apps, { ...data, versions: [] }]);
     } catch (error) {
       console.error('Error:', error);
+      showFetchError();
     }
   };
 

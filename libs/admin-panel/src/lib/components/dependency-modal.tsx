@@ -17,6 +17,8 @@ import {
 import { Label } from '@verity/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@verity/ui/select';
 
+import { useFetchErrorToast } from '../utils/show-fetch-error';
+
 export interface DependencyModalProps {
   readonly currentAppId: string;
   readonly onFormSubmit: (versionId: number) => void;
@@ -28,6 +30,7 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
   const [version, setVersion] = useState<Version | null>(null);
   const [appsIds, setAppsIds] = useState<string[]>([]);
   const [versions, setVersions] = useState<Version[]>([]);
+  const showFetchError = useFetchErrorToast();
 
   useEffect(() => {
     const updateAppsIds = async () => {
@@ -35,10 +38,13 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
         const response = await fetch('api/apps');
         const data: App[] = await response.json();
 
+        if (!response.ok) return showFetchError();
+
         const ids = data.map(({ id }) => id).filter((id) => id !== currentAppId);
         setAppsIds(ids);
       } catch (error) {
         console.error('Error:', error);
+        showFetchError();
       }
     };
 
@@ -55,9 +61,12 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
         const response = await fetch(`api/apps/${appId}/versions`);
         const data: Version[] = await response.json();
 
+        if (!response.ok) return showFetchError();
+
         setVersions(data);
       } catch (error) {
         console.error('Error:', error);
+        showFetchError();
       }
     };
 
