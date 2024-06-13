@@ -49,27 +49,25 @@ export const UserProfile = ({ user }: UserProfileProps) => {
   };
 
   return (
-    currentUser && (
-      <div className="p-4">
-        <h1 className="font-bold">User Profile</h1>
-        <div>
-          <b>Name:</b> {currentUser.name}
-        </div>
-        <div>
-          <b>Email:</b> {currentUser.email}
-        </div>
-        <div className="font-bold">CI token:</div>
-        {currentUser.ciToken && (
-          <div className="flex mt-1">
-            <pre className="border w-fit p-2">{currentUser.ciToken}</pre>
-            <Button onClick={() => currentUser.ciToken && copyToClipboard(currentUser.ciToken)}>
-              <Copy />
-            </Button>
-          </div>
-        )}
-        {!currentUser.ciToken && <Button onClick={generateCiToken}>Generate CI Token</Button>}
-        <Toaster />
+    <div className="p-4">
+      <h1 className="font-bold">User Profile</h1>
+      <div>
+        <b>Name:</b> {currentUser.name}
       </div>
-    )
+      <div>
+        <b>Email:</b> {currentUser.email}
+      </div>
+      <div className="font-bold">CI token:</div>
+      {currentUser.ciToken && (
+        <div className="flex mt-1">
+          <pre className="border w-fit p-2">{currentUser.ciToken}</pre>
+          <Button onClick={() => currentUser.ciToken && copyToClipboard(currentUser.ciToken)}>
+            <Copy />
+          </Button>
+        </div>
+      )}
+      {!currentUser.ciToken && <Button onClick={generateCiToken}>Generate CI Token</Button>}
+      <Toaster />
+    </div>
   );
 };
