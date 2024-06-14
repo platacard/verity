@@ -1,13 +1,14 @@
 import { NextRequest } from 'next/server';
 
 import { createApp, getApps } from '@verity/app';
+import { withAuth } from '@verity/auth/server';
 
-export async function GET() {
+export const GET = withAuth(async () => {
   return getApps();
-}
+});
 
-export async function POST(request: NextRequest) {
+export const POST = withAuth(async (request: NextRequest) => {
   const data = await request.json();
 
   return createApp(data);
-}
+}, true);

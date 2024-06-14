@@ -1,7 +1,9 @@
 import { NextRequest } from 'next/server';
 
+import { withAuth } from '@verity/auth/server';
+import { DynamicRouteData } from '@verity/shared/server';
 import { getVersionsByAppId } from '@verity/version';
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  return getVersionsByAppId(params.id);
-}
+export const GET = withAuth(async (request: NextRequest, routeData: DynamicRouteData) => {
+  return getVersionsByAppId(routeData.params.id);
+}, true);

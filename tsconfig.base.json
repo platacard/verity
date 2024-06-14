@@ -23,6 +23,8 @@
       "@verity/dependency": ["libs/dependency/src/index.ts"],
       "@verity/deps-api": ["libs/deps-api/src/server.ts"],
       "@verity/prisma": ["libs/prisma/src/index.ts"],
+      "@verity/shared": ["libs/shared/src/index.ts"],
+      "@verity/shared/server": ["libs/shared/src/server.ts"],
       "@verity/ui": ["libs/ui/src/index.ts"],
       "@verity/ui/*": ["libs/ui/src/lib/*"],
       "@verity/ui/server": ["libs/ui/src/server.ts"],
