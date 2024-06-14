@@ -1,0 +1,14 @@
+{
+  "name": "@verity/cli",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "bin": {
+    "verity": "./src/lib/index.js"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "tslib": "^2.3.0"
+  }
+}
