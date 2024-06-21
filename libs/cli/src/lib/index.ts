@@ -28,7 +28,7 @@ async function run() {
     console.log('Current Application does not exists, creating Application with version...');
     const newApp = await createApp();
 
-    if (newApp.id) {
+    if (newApp) {
       const newVersion = await createVersion();
       if (newVersion) {
         console.log(
