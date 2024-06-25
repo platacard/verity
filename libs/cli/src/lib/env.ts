@@ -6,6 +6,7 @@ export enum VerityCiContextKeys {
 }
 
 export const validateEnv = () => {
+  console.log('Validating environment variables...');
   const missingVariables = Object.values(VerityCiContextKeys).filter((key) => !process.env[key]);
 
   if (missingVariables.length) {
