@@ -13,7 +13,7 @@ const versionsCommand = program.command('version').description('Manage versions'
 versionsCommand
   .command('upsert')
   .description(
-    'Mark the current version as built, or create and mark a new version if it does not exist.',
+    'Marks the current version as built, or creates and marks a new version if it does not exist.',
   )
   .option('--force-create-app', 'Force create application if it does not exist')
   .action(async (cmd) => {
