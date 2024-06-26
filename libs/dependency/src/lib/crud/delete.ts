@@ -2,10 +2,11 @@ import { NextResponse } from 'next/server';
 
 import { prisma } from '@verity/prisma';
 
-export const deleteDependency = async (id: number) => {
+export const markDependencyAsDeleted = async (id: number) => {
   try {
-    await prisma.dependency.delete({
+    await prisma.dependency.update({
       where: { id },
+      data: { deleted: true },
     });
 
     return NextResponse.json({ success: true });

@@ -9,12 +9,21 @@ import { AppWithVersionsAndDeps } from '../models';
 export const getApps = async () => {
   const apps: AppWithVersionsAndDeps[] =
     (await prisma.app.findMany({
+      where: {
+        deleted: false,
+      },
       include: {
         versions: {
+          where: { deleted: false },
           include: {
             dependencies: {
+              where: { deleted: false },
               include: {
-                dependencyAppVersion: true,
+                dependencyAppVersion: {
+                  include: {
+                    app: true,
+                  },
+                },
               },
             },
           },
@@ -25,7 +34,7 @@ export const getApps = async () => {
   return NextResponse.json(apps);
 };
 
-export const getAppById = async (id: string) => {
+export const getAppById = async (id: number) => {
   const app: App | null = await prisma.app.findUnique({
     where: { id },
   });

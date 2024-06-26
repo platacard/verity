@@ -28,12 +28,12 @@ export default function AppsList() {
     }
   };
 
-  const handleAddApp = async (id: string) => {
+  const handleAddApp = async (name: string) => {
     try {
       const response = await fetch('api/apps', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ name }),
       });
       const data: AppWithVersionsAndDeps = await response.json();
 
@@ -46,7 +46,7 @@ export default function AppsList() {
     }
   };
 
-  const handleDeleteApp = async (id: string) => {
+  const handleDeleteApp = async (id: number) => {
     try {
       await fetch(`api/apps/${id}`, { method: 'DELETE' });
 
@@ -67,7 +67,7 @@ export default function AppsList() {
                 buttonLabel: '+ Create App',
                 title: 'Create new App',
                 description: 'Create new application instance',
-                inputLabel: 'Name (appId):',
+                inputLabel: 'Name:',
               }}
               onFormSubmit={handleAddApp}
             />

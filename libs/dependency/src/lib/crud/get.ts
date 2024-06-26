@@ -8,7 +8,7 @@ export const getVersionDependencies = async (versionId: number) => {
   try {
     const dependencies: Dependency[] =
       (await prisma.dependency.findMany({
-        where: { dependantAppVersionId: versionId },
+        where: { dependantAppVersionId: versionId, deleted: false },
       })) ?? [];
 
     return NextResponse.json(dependencies);

@@ -97,14 +97,14 @@ export function VersionComponent({ version, onDelete }: VersionComponentProps) {
             <Card key={dep.id} className="px-4 py-2 relative">
               <div className="absolute right-1 top-1">
                 <ConfirmationModal
-                  title={`Remove dependency from: ${dep.dependencyAppVersion.appId}`}
+                  title={`Remove dependency from: ${dep.dependencyAppVersion.app.name}`}
                   message={'You are going to remove dependency. Are you sure?'}
                   onConfirm={() => handleDeleteDependency(dep.id)}
                 />
               </div>
               <div>
                 <div>
-                  <span className="font-bold">App:</span> {dep.dependencyAppVersion.appId}
+                  <span className="font-bold">App:</span> {dep.dependencyAppVersion.app.name}
                 </div>
                 <div>
                   <span className="font-bold">Version:</span> {dep.dependencyAppVersion.value}

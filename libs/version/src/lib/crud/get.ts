@@ -4,11 +4,11 @@ import { Version } from '@prisma/client';
 
 import { prisma } from '@verity/prisma';
 
-export const getVersionsByAppId = async (appId: string) => {
+export const getVersionsByAppId = async (appId: number) => {
   try {
     const versions: Version[] =
       (await prisma.version.findMany({
-        where: { appId },
+        where: { appId, deleted: false },
       })) ?? [];
 
     return NextResponse.json(versions);

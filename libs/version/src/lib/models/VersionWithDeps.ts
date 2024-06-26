@@ -4,7 +4,11 @@ export type VersionWithDeps = Prisma.VersionGetPayload<{
   include: {
     dependencies: {
       include: {
-        dependencyAppVersion: true;
+        dependencyAppVersion: {
+          include: {
+            app: true;
+          };
+        };
       };
     };
   };

@@ -79,23 +79,24 @@ model Authenticator {
 }
 
 model App {
-  id        String       @id @unique
-  createdAt DateTime     @default(now())
+  id        Int       @id @unique @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  deleted   Boolean   @default(false)
   versions  Version[]
 }
 
 model Version {
-  id           Int                    @unique @default(autoincrement())
-  createdAt    DateTime               @default(now())
-  value        String
-  builtAt      DateTime?
-  appId        String
+  id        Int       @id @unique @default(autoincrement())
+  createdAt DateTime  @default(now())
+  value     String
+  builtAt   DateTime?
+  appId     Int
+  deleted   Boolean   @default(false)
+
   dependencies Dependency[] @relation("AppVersionDependency")
   dependsOn    Dependency[] @relation("AppVersionDependsOn")
-
-  app App @relation(fields: [appId], references: [id], onDelete: Cascade)
-
-  @@id([appId, value])
+  app          App          @relation(fields: [appId], references: [id], onDelete: Cascade)
 }
 
 model Dependency {
@@ -103,6 +104,7 @@ model Dependency {
   createdAt              DateTime @default(now())
   dependantAppVersionId  Int
   dependencyAppVersionId Int
+  deleted                Boolean  @default(false)
 
   dependantAppVersion  Version @relation("AppVersionDependency", fields: [dependantAppVersionId], references: [id], onDelete: Cascade)
   dependencyAppVersion Version @relation("AppVersionDependsOn", fields: [dependencyAppVersionId], references: [id], onDelete: Cascade)

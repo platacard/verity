@@ -22,23 +22,6 @@ export const getApp = async () => {
   return appVersionResp?.data ?? null;
 };
 
-export const createApp = async () => {
-  const appResp = await axios
-    .post(
-      `${VERITY_URL}/apps`,
-      {
-        id: VERITY_APP_ID,
-      },
-      requestConfig,
-    )
-    .catch(() => {
-      console.error('Error creating App');
-      process.exit(1);
-    });
-
-  return appResp.data;
-};
-
 export const getAppVersions = async () => {
   const appVersionResp = await axios
     .get(`${VERITY_URL}/apps/${VERITY_APP_ID}/versions`, requestConfig)
@@ -51,11 +34,11 @@ export const createVersion = async () => {
   const versionResp = await axios
     .post(
       `${VERITY_URL}/versions`,
-      {
-        appId: VERITY_APP_ID,
+      JSON.stringify({
+        appId: VERITY_APP_ID && parseInt(VERITY_APP_ID),
         value: VERITY_APP_VERSION,
         builtAt: new Date().toISOString(),
-      },
+      }),
       requestConfig,
     )
     .catch(() => {

@@ -22,6 +22,3 @@ This command performs the following:
 - Checks if the current version of the application is registered in Verity.
 - If the application and version exist, it marks the version as built.
 - If the version does not exist, it creates a new version and marks it as built.
-
-**Note:** _If the application does not exist in Verity, the command will fail. To automatically
-register a new application, use the `--force-create-app` flag._

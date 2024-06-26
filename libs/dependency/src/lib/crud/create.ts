@@ -23,7 +23,11 @@ export const createDependency = async (data: z.infer<typeof createDependencySche
         dependencyAppVersionId: parsedData.dependencyAppVersionId,
       },
       include: {
-        dependencyAppVersion: true,
+        dependencyAppVersion: {
+          include: {
+            app: true,
+          },
+        },
       },
     });
 
