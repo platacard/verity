@@ -13,7 +13,7 @@ import { VersionComponent } from './version-component';
 export interface AppComponentProps {
   readonly app: AppWithVersionsAndDeps;
   readonly updateAppList: () => void;
-  readonly onDelete: (id: string) => void;
+  readonly onDelete: (id: number) => void;
 }
 
 export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps) {
@@ -62,7 +62,7 @@ export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps
     <Card className="relative">
       <div className="absolute right-1 top-1">
         <ConfirmationModal
-          title={`Remove application: ${app.id}`}
+          title={`Remove application: ${app.name}`}
           message={
             'You are going to completely remove application with all versions and dependencies. Are you sure?'
           }
@@ -74,7 +74,10 @@ export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps
         <div className="flex items-center justify-between">
           <div className="grid gap-1">
             <div>
-              <span className="font-bold">Name:</span> <span>{application.id}</span>
+              <span className="font-bold">Id:</span> <span>{application.id}</span>
+            </div>
+            <div>
+              <span className="font-bold">Name:</span> <span>{application.name}</span>
             </div>
             <div>
               <span className="font-bold">Created:</span>{' '}

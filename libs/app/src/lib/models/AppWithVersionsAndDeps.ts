@@ -6,7 +6,11 @@ export type AppWithVersionsAndDeps = Prisma.AppGetPayload<{
       include: {
         dependencies: {
           include: {
-            dependencyAppVersion: true;
+            dependencyAppVersion: {
+              include: {
+                app: true;
+              };
+            };
           };
         };
       };

@@ -1,13 +1,13 @@
 import { NextRequest } from 'next/server';
 
-import { deleteApp, getAppById } from '@verity/app';
+import { getAppById, markAppAsDeleted } from '@verity/app';
 import { withAuth } from '@verity/auth/server';
 import { DynamicRouteData } from '@verity/shared/server';
 
 export const GET = withAuth(async (request: NextRequest, routeData: DynamicRouteData) => {
-  return getAppById(routeData.params.id);
+  return getAppById(parseInt(routeData.params.id));
 }, true);
 
 export const DELETE = withAuth(async (request: NextRequest, routeData: DynamicRouteData) => {
-  return deleteApp(routeData.params.id);
+  return markAppAsDeleted(parseInt(routeData.params.id));
 });

@@ -19,7 +19,7 @@ export const createApp = async (data: z.infer<typeof createAppSchema>) => {
   try {
     const app: App = await prisma.app.create({
       data: {
-        id: parsedData.id,
+        name: parsedData.name,
       },
     });
 

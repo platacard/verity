@@ -2,8 +2,9 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 
-import { App, Version } from '@prisma/client';
+import { Version } from '@prisma/client';
 
+import { AppWithVersionsAndDeps } from '@verity/app';
 import { Button } from '@verity/ui/button';
 import {
   Dialog,
@@ -20,28 +21,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useFetchErrorToast } from '../utils/show-fetch-error';
 
 export interface DependencyModalProps {
-  readonly currentAppId: string;
+  readonly currentAppId: number;
   readonly onFormSubmit: (versionId: number) => void;
 }
 
 export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [appId, setAppId] = useState<string | null>(null);
-  const [version, setVersion] = useState<Version | null>(null);
-  const [appsIds, setAppsIds] = useState<string[]>([]);
-  const [versions, setVersions] = useState<Version[]>([]);
+  const [appsList, setAppsList] = useState<AppWithVersionsAndDeps[]>([]);
+  const [selectedApp, setSelectedApp] = useState<AppWithVersionsAndDeps | null>(null);
+  const [selectedVersion, setSelectedVersion] = useState<Version | null>(null);
   const showFetchError = useFetchErrorToast();
 
   useEffect(() => {
-    const updateAppsIds = async () => {
+    const updateAppsList = async () => {
       try {
         const response = await fetch('api/apps');
-        const data: App[] = await response.json();
+        const data: AppWithVersionsAndDeps[] = await response.json();
 
         if (!response.ok) return showFetchError();
 
-        const ids = data.map(({ id }) => id).filter((id) => id !== currentAppId);
-        setAppsIds(ids);
+        const apps = data.filter(({ id }) => id !== currentAppId);
+        setAppsList(apps);
       } catch (error) {
         console.error('Error:', error);
         showFetchError();
@@ -49,49 +49,35 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
     };
 
     if (isOpen) {
-      void updateAppsIds();
+      void updateAppsList();
     } else {
       resetState();
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    const updateVersions = async () => {
-      try {
-        const response = await fetch(`api/apps/${appId}/versions`);
-        const data: Version[] = await response.json();
-
-        if (!response.ok) return showFetchError();
-
-        setVersions(data);
-      } catch (error) {
-        console.error('Error:', error);
-        showFetchError();
-      }
-    };
-
-    if (appId) {
-      void updateVersions();
-    }
-  }, [appId]);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!version?.id) return;
-    onFormSubmit(version.id);
+    if (!selectedVersion) return;
+    onFormSubmit(selectedVersion.id);
     setIsOpen(false);
   };
 
+  const handleAppSelect = (id: number) => {
+    const app = appsList.find((app) => app.id === id) ?? null;
+
+    setSelectedApp(app);
+    setSelectedVersion(null);
+  };
+
   const handleVersionChange = (id: number) => {
-    const version = versions.find((version) => version.id === id) ?? null;
-    setVersion(version);
+    const version = selectedApp?.versions.find((version) => version.id === id) ?? null;
+    setSelectedVersion(version);
   };
 
   const resetState = () => {
-    setAppId(null);
-    setVersion(null);
-    setAppsIds([]);
-    setVersions([]);
+    setSelectedApp(null);
+    setSelectedVersion(null);
+    setAppsList([]);
   };
 
   return (
@@ -110,14 +96,14 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
           <div className="flex flex-col gap-4 py-4">
             <div>
               <Label>Available Apps:</Label>
-              <Select onValueChange={(id) => setAppId(id)}>
+              <Select onValueChange={(id) => handleAppSelect(+id)}>
                 <SelectTrigger>
-                  <SelectValue>{appId}</SelectValue>
+                  <SelectValue>{selectedApp ? selectedApp.name : 'Select an app'}</SelectValue>
                 </SelectTrigger>
                 <SelectContent className="SelectContent">
-                  {appsIds.map((appId) => (
-                    <SelectItem key={appId} value={appId}>
-                      {appId}
+                  {appsList.map((app) => (
+                    <SelectItem key={app.id} value={app.id.toString()}>
+                      {app.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -125,12 +111,16 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
             </div>
             <div>
               <Label>Available Versions:</Label>
-              <Select disabled={!appId} required onValueChange={(id) => handleVersionChange(+id)}>
+              <Select
+                disabled={!selectedApp}
+                required
+                onValueChange={(id) => handleVersionChange(+id)}
+              >
                 <SelectTrigger>
-                  <SelectValue>{version?.value ?? ''}</SelectValue>
+                  <SelectValue>{selectedVersion?.value ?? ''}</SelectValue>
                 </SelectTrigger>
                 <SelectContent className="SelectContent">
-                  {versions.map((version) => (
+                  {selectedApp?.versions.map((version) => (
                     <SelectItem key={version.id} value={version.id.toString()}>
                       {version.value}
                     </SelectItem>

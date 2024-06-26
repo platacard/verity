@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 
 import { withAuth } from '@verity/auth/server';
 import { DynamicRouteData } from '@verity/shared/server';
-import { deleteVersion, markVersionAsBuilt } from '@verity/version';
+import { markVersionAsBuilt, markVersionAsDeleted } from '@verity/version';
 
 export const PUT = withAuth(async (request: NextRequest, routeData: DynamicRouteData) => {
   const data = await request.json();
@@ -11,5 +11,5 @@ export const PUT = withAuth(async (request: NextRequest, routeData: DynamicRoute
 }, true);
 
 export const DELETE = withAuth(async (request: NextRequest, routeData: DynamicRouteData) => {
-  return deleteVersion(parseInt(routeData.params.id));
+  return markVersionAsDeleted(parseInt(routeData.params.id));
 });

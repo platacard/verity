@@ -21,7 +21,7 @@ export const upsertVersion = async (forceCreateApp: boolean) => {
       const newVersion = await createVersion();
       if (newVersion) {
         console.log(
-          `Application "${newApp.id}" with Version "${newVersion.value}" created successfully!`,
+          `Application "${newApp.name}" with Version "${newVersion.value}" created successfully!`,
         );
 
         process.exit(0);
@@ -42,7 +42,7 @@ export const upsertVersion = async (forceCreateApp: boolean) => {
 
     if (updatedVersion) {
       console.log(
-        `Application "${currentApp.id}" Version "${updatedVersion.value}" updated successfully!`,
+        `Application "${currentApp.name}" Version "${updatedVersion.value}" updated successfully!`,
       );
       process.exit(0);
     }
@@ -53,7 +53,7 @@ export const upsertVersion = async (forceCreateApp: boolean) => {
 
   if (newVersion) {
     console.log(
-      `Application "${currentApp.id}" Version "${newVersion.value}" created successfully!`,
+      `Application "${currentApp.name}" Version "${newVersion.value}" created successfully!`,
     );
     process.exit(0);
   }
