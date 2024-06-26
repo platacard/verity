@@ -1,0 +1,35 @@
+name: Publish NPM Package
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@platacard' # Replace with your GitHub username or organization
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - run: git config --global user.email "igor@katsuba.dev"
+      - run: git config --global user.name "IKatsuba"
+
+      - name: Print Environment Info
+        run: npx nx report
+        shell: bash
+
+      - name: Publish packages
+        run: npx nx release publish
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
