@@ -9,6 +9,5 @@
     "dev": {
       "dependsOn": ["verity:prisma:migrate:dev"]
     }
-  },
-  "implicitDependencies": ["cli"]
+  }
 }
