@@ -73,7 +73,7 @@
       "conventionalCommits": true
     },
     "git": {
-      "commitMessage": "chore(verity): publish {version} [skip ci]"
+      "commitMessage": "chore(verity): publish {version}"
     },
     "changelog": {
       "workspaceChangelog": {
