@@ -70,10 +70,7 @@
   "release": {
     "projects": ["libs/cli"],
     "version": {
-      "conventionalCommits": true,
-      "generatorOptions": {
-        "fallbackCurrentVersionResolver": "disk"
-      }
+      "conventionalCommits": true
     },
     "changelog": {
       "workspaceChangelog": {
