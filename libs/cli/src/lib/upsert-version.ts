@@ -1,32 +1,15 @@
 import process from 'node:process';
 
-import { createApp, createVersion, getApp, getAppVersions, markVersionAsBuilt } from './api';
+import { createVersion, getApp, getAppVersions, markVersionAsBuilt } from './api';
 import { VerityCiContextKeys } from './env';
 
-export const upsertVersion = async (forceCreateApp: boolean) => {
+export const upsertVersion = async () => {
   console.log('Check Application...');
   const currentApp = await getApp();
 
   if (!currentApp) {
-    if (!forceCreateApp) {
-      throw new Error(
-        'Current Application does not exists, use --force-create-app to create Application',
-      );
-    }
-
-    console.log('Current Application does not exists, creating Application with version...');
-    const newApp = await createApp();
-
-    if (newApp) {
-      const newVersion = await createVersion();
-      if (newVersion) {
-        console.log(
-          `Application "${newApp.name}" with Version "${newVersion.value}" created successfully!`,
-        );
-
-        process.exit(0);
-      }
-    }
+    console.error('Application not found!');
+    process.exit(1);
   }
 
   console.log('Check Version...');
@@ -41,9 +24,7 @@ export const upsertVersion = async (forceCreateApp: boolean) => {
     const updatedVersion = await markVersionAsBuilt(currentVersion.id);
 
     if (updatedVersion) {
-      console.log(
-        `Application "${currentApp.name}" Version "${updatedVersion.value}" updated successfully!`,
-      );
+      console.log(`Version "${updatedVersion.value}" updated successfully!`);
       process.exit(0);
     }
   }
@@ -52,9 +33,7 @@ export const upsertVersion = async (forceCreateApp: boolean) => {
   const newVersion = await createVersion();
 
   if (newVersion) {
-    console.log(
-      `Application "${currentApp.name}" Version "${newVersion.value}" created successfully!`,
-    );
+    console.log(`Version "${newVersion.value}" created successfully!`);
     process.exit(0);
   }
 };

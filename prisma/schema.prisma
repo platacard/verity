@@ -87,7 +87,7 @@ model App {
 }
 
 model Version {
-  id        Int       @unique @default(autoincrement())
+  id        Int       @id @unique @default(autoincrement())
   createdAt DateTime  @default(now())
   value     String
   builtAt   DateTime?
@@ -97,8 +97,6 @@ model Version {
   dependencies Dependency[] @relation("AppVersionDependency")
   dependsOn    Dependency[] @relation("AppVersionDependsOn")
   app          App          @relation(fields: [appId], references: [id], onDelete: Cascade)
-
-  @@id([appId, value])
 }
 
 model Dependency {

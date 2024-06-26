@@ -15,10 +15,9 @@ versionsCommand
   .description(
     'Marks the current version as built, or creates and marks a new version if it does not exist.',
   )
-  .option('--force-create-app', 'Force create application if it does not exist')
-  .action(async (cmd) => {
+  .action(async () => {
     validateEnv();
-    await upsertVersion(cmd.forceCreateApp);
+    await upsertVersion();
   });
 
 program.parse(process.argv);

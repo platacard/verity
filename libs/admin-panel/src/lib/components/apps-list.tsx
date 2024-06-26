@@ -67,7 +67,7 @@ export default function AppsList() {
                 buttonLabel: '+ Create App',
                 title: 'Create new App',
                 description: 'Create new application instance',
-                inputLabel: 'Name (appId):',
+                inputLabel: 'Name:',
               }}
               onFormSubmit={handleAddApp}
             />

@@ -27,7 +27,7 @@ ALTER TABLE "Version" DROP CONSTRAINT "Version_pkey",
 ADD COLUMN     "deleted" BOOLEAN NOT NULL DEFAULT false,
 DROP COLUMN "appId",
 ADD COLUMN     "appId" INTEGER NOT NULL,
-ADD CONSTRAINT "Version_pkey" PRIMARY KEY ("appId", "value");
+ADD CONSTRAINT "Version_pkey" PRIMARY KEY ("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "App_id_key" ON "App"("id");
