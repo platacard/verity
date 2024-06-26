@@ -27,4 +27,4 @@ jobs:
       - run: git config --global user.name "IKatsuba"
       - run: npx nx release --skip-publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
