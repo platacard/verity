@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@platacard' # Replace with your GitHub username or organization
+          scope: '@platacard'
 
       - name: Install Dependencies
         run: npm ci
@@ -29,7 +29,7 @@ jobs:
         shell: bash
 
       - name: Publish packages
-        run: npx nx release publish
+        run: npx nx release publish --registry=https://npm.pkg.github.com
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
