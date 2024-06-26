@@ -28,6 +28,5 @@
         "packageRoot": "dist/{projectRoot}"
       }
     }
-  },
-  "implicitDependencies": ["web"]
+  }
 }
