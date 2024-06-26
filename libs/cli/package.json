@@ -1,6 +1,6 @@
 {
   "name": "@platacard/verity-cli",
-  "version": "0.0.0-development",
+  "version": "0.0.1",
   "repository": "https://github.com/platacard/verity",
   "type": "module",
   "main": "./src/index.js",
