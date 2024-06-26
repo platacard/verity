@@ -22,7 +22,7 @@ jobs:
         run: npm ci
 
       - name: Publish packages
-        run: npx nx release publish --registry=https://npm.pkg.github.com
+        run: npx nx release publish --projects=cli --registry=https://npm.pkg.github.com
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

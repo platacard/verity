@@ -68,7 +68,7 @@
     }
   },
   "release": {
-    "projects": ["libs/cli"],
+    "projects": ["libs/cli", "apps/web"],
     "version": {
       "conventionalCommits": true
     },
