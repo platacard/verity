@@ -15,7 +15,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 });
 
 export const withAuth = (
-  handler: (req: NextRequest, dynamicData: DynamicRouteData, user: User) => Promise<unknown>,
+  handler: (
+    req: NextRequest,
+    dynamicData: DynamicRouteData,
+    user: User,
+  ) => Promise<void | Response>,
   allowTokenAuth = false,
 ) => {
   return async (req: NextRequest, dynamicData: DynamicRouteData) => {
