@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 
-import { Version } from '@prisma/client';
+import { User, Version } from '@prisma/client';
 import { z } from 'zod';
 
+import { AuditLogEventType, logEvent } from '@verity/audit-logs';
 import { prisma } from '@verity/prisma';
 
 import { createVersionSchema } from './schemas';
 
-export const createVersion = async (data: z.infer<typeof createVersionSchema>) => {
+export const createVersion = async (data: z.infer<typeof createVersionSchema>, user: User) => {
   let parsedData: z.infer<typeof createVersionSchema>;
 
   try {
@@ -23,6 +24,14 @@ export const createVersion = async (data: z.infer<typeof createVersionSchema>) =
         value: parsedData.value,
         builtAt: parsedData.builtAt ?? null,
       },
+    });
+
+    await logEvent({
+      action: AuditLogEventType.VERSION_CREATE,
+      timestamp: version.createdAt,
+      userId: user.id,
+      appId: version.appId,
+      versionId: version.id,
     });
 
     return NextResponse.json(version);

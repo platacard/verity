@@ -1,0 +1,9 @@
+{
+  "name": "audit-logs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/audit-logs/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project audit-logs --web",
+  "targets": {}
+}

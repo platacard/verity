@@ -1,12 +1,22 @@
 import { NextResponse } from 'next/server';
 
+import { User } from '@prisma/client';
+
+import { AuditLogEventType, logEvent } from '@verity/audit-logs';
 import { prisma } from '@verity/prisma';
 
-export const markAppAsDeleted = async (id: number) => {
+export const markAppAsDeleted = async (id: number, user: User) => {
   try {
     await prisma.app.update({
       where: { id },
       data: { deleted: true },
+    });
+
+    await logEvent({
+      action: AuditLogEventType.APPLICATION_DELETE,
+      timestamp: new Date(),
+      userId: user.id,
+      appId: id,
     });
 
     await prisma.version.updateMany({
@@ -20,6 +30,16 @@ export const markAppAsDeleted = async (id: number) => {
     });
     const affectedVersionIds = affectedVersions.map((version) => version.id);
 
+    for (const versionId of affectedVersionIds) {
+      await logEvent({
+        action: AuditLogEventType.VERSION_DELETE,
+        timestamp: new Date(),
+        userId: user.id,
+        appId: id,
+        versionId,
+      });
+    }
+
     await prisma.dependency.updateMany({
       where: {
         OR: [
@@ -29,6 +49,27 @@ export const markAppAsDeleted = async (id: number) => {
       },
       data: { deleted: true },
     });
+
+    const affectedDependencies = await prisma.dependency.findMany({
+      where: {
+        OR: [
+          { dependantAppVersionId: { in: affectedVersionIds } },
+          { dependencyAppVersionId: { in: affectedVersionIds } },
+        ],
+      },
+      select: { id: true, dependantAppVersionId: true },
+    });
+
+    for (const dependency of affectedDependencies) {
+      await logEvent({
+        action: AuditLogEventType.DEPENDENCY_DELETE,
+        timestamp: new Date(),
+        userId: user.id,
+        appId: id,
+        versionId: dependency.dependantAppVersionId,
+        dependencyId: dependency.id,
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

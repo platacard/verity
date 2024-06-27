@@ -58,6 +58,13 @@ export default async function Component() {
           >
             Profile
           </Link>
+          <Link
+            href="/audit-logs"
+            className="text-sm font-medium hover:underline underline-offset-4"
+            prefetch={false}
+          >
+            Audit Logs
+          </Link>
         </nav>
       </header>
       <main className="flex-1">
