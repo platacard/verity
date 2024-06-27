@@ -1,6 +1,6 @@
 import { prisma } from '@verity/prisma';
 
-import { AuditLogEvent } from './models/audit-log-event';
+import { AuditLogEvent } from './models/AuditLogEvent';
 
 export const logEvent = async (event: AuditLogEvent) => {
   const { userId, timestamp, action, appId, versionId, dependencyId } = event;
