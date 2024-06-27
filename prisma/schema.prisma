@@ -21,6 +21,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  auditLogs AuditLogs[]
 }
 
 model Account {
@@ -84,6 +85,7 @@ model App {
   createdAt DateTime  @default(now())
   deleted   Boolean   @default(false)
   versions  Version[]
+  auditLogs AuditLogs[]
 }
 
 model Version {
@@ -97,6 +99,7 @@ model Version {
   dependencies Dependency[] @relation("AppVersionDependency")
   dependsOn    Dependency[] @relation("AppVersionDependsOn")
   app          App          @relation(fields: [appId], references: [id], onDelete: Cascade)
+  auditLogs    AuditLogs[]
 }
 
 model Dependency {
@@ -108,4 +111,20 @@ model Dependency {
 
   dependantAppVersion  Version @relation("AppVersionDependency", fields: [dependantAppVersionId], references: [id], onDelete: Cascade)
   dependencyAppVersion Version @relation("AppVersionDependsOn", fields: [dependencyAppVersionId], references: [id], onDelete: Cascade)
+  auditLogs            AuditLogs[]
+}
+
+model AuditLogs {
+  id           Int      @id @unique @default(autoincrement())
+  timestamp    DateTime
+  action       String
+  userId       String?
+  appId        Int?
+  versionId    Int?
+  dependencyId Int?
+
+  user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  app        App?        @relation(fields: [appId], references: [id], onDelete: SetNull)
+  version    Version?    @relation(fields: [versionId], references: [id], onDelete: SetNull)
+  dependency Dependency? @relation(fields: [dependencyId], references: [id], onDelete: SetNull)
 }
