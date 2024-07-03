@@ -13,14 +13,16 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  roleId        String?
   ciToken       String?         @unique
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
   authenticator Authenticator[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  role      UserRole?    @relation(fields: [roleId], references: [id], onDelete: SetNull)
   auditLogs AuditLogs[]
 }
 
@@ -80,10 +82,10 @@ model Authenticator {
 }
 
 model App {
-  id        Int       @id @unique @default(autoincrement())
+  id        Int         @id @unique @default(autoincrement())
   name      String
-  createdAt DateTime  @default(now())
-  deleted   Boolean   @default(false)
+  createdAt DateTime    @default(now())
+  deleted   Boolean     @default(false)
   versions  Version[]
   auditLogs AuditLogs[]
 }
@@ -109,8 +111,8 @@ model Dependency {
   dependencyAppVersionId Int
   deleted                Boolean  @default(false)
 
-  dependantAppVersion  Version @relation("AppVersionDependency", fields: [dependantAppVersionId], references: [id], onDelete: Cascade)
-  dependencyAppVersion Version @relation("AppVersionDependsOn", fields: [dependencyAppVersionId], references: [id], onDelete: Cascade)
+  dependantAppVersion  Version     @relation("AppVersionDependency", fields: [dependantAppVersionId], references: [id], onDelete: Cascade)
+  dependencyAppVersion Version     @relation("AppVersionDependsOn", fields: [dependencyAppVersionId], references: [id], onDelete: Cascade)
   auditLogs            AuditLogs[]
 }
 
@@ -127,4 +129,11 @@ model AuditLogs {
   app        App?        @relation(fields: [appId], references: [id], onDelete: SetNull)
   version    Version?    @relation(fields: [versionId], references: [id], onDelete: SetNull)
   dependency Dependency? @relation(fields: [dependencyId], references: [id], onDelete: SetNull)
+}
+
+model UserRole {
+  id          String  @id @unique
+  name        String
+  description String?
+  User        User[]
 }

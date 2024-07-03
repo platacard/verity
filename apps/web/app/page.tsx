@@ -59,6 +59,13 @@ export default async function Component() {
             Profile
           </Link>
           <Link
+            href="/users"
+            className="text-sm font-medium hover:underline underline-offset-4"
+            prefetch={false}
+          >
+            Users
+          </Link>
+          <Link
             href="/audit-logs"
             className="text-sm font-medium hover:underline underline-offset-4"
             prefetch={false}

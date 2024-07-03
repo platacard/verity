@@ -1,0 +1,9 @@
+{
+  "name": "user-roles",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/user-roles/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project user-roles --web",
+  "targets": {}
+}
