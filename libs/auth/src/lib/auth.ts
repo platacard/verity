@@ -7,6 +7,7 @@ import { User } from '@prisma/client';
 
 import { prisma } from '@verity/prisma';
 import { DynamicRouteData } from '@verity/shared/server';
+import { DefaultUserRoles } from '@verity/user-roles';
 
 import { getUserFromSession } from './get-user-from-session';
 
@@ -14,6 +15,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Keycloak],
   session: { strategy: 'jwt' },
+  events: {
+    async createUser({ user }) {
+      const usersCount = await prisma.user.count();
+      if (usersCount === 1) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { roleId: DefaultUserRoles.ADMIN },
+        });
+      }
+    },
+  },
 });
 
 export const withAuth = (
