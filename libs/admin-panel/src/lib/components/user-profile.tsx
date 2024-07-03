@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
-import { User } from '@prisma/client';
 import { Copy } from 'lucide-react';
 
+import { UserWithRole } from '@verity/auth';
 import { Button } from '@verity/ui/button';
 import { Toaster } from '@verity/ui/toaster';
 
@@ -12,11 +12,11 @@ import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { useSuccessToast } from '../utils/show-success-toast';
 
 export interface UserProfileProps {
-  user: User;
+  user: UserWithRole;
 }
 
 export const UserProfile = ({ user }: UserProfileProps) => {
-  const [currentUser, setCurrentUser] = useState<User>(user);
+  const [currentUser, setCurrentUser] = useState<UserWithRole>(user);
   const showFetchError = useFetchErrorToast();
   const showSuccessToast = useSuccessToast('Token copied to clipboard');
 
@@ -56,6 +56,9 @@ export const UserProfile = ({ user }: UserProfileProps) => {
       </div>
       <div>
         <b>Email:</b> {currentUser.email}
+      </div>
+      <div>
+        <b>Role:</b> {currentUser.role?.name ?? 'not assigned'}
       </div>
       <div className="font-bold">CI token:</div>
       {currentUser.ciToken && (

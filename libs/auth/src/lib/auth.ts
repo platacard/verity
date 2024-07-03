@@ -8,6 +8,8 @@ import { User } from '@prisma/client';
 import { prisma } from '@verity/prisma';
 import { DynamicRouteData } from '@verity/shared/server';
 
+import { getUserFromSession } from './get-user-from-session';
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Keycloak],
@@ -19,17 +21,14 @@ export const withAuth = (
     req: NextRequest,
     dynamicData: DynamicRouteData,
     user: User,
-  ) => Promise<void | Response>,
+  ) => Promise<void | NextResponse>,
   allowTokenAuth = false,
 ) => {
   return async (req: NextRequest, dynamicData: DynamicRouteData) => {
     const session = await auth();
+    const user = session && (await getUserFromSession(session));
 
-    if (session?.user?.email) {
-      const user = await prisma.user.findUnique({ where: { email: session.user.email } });
-
-      if (user) return handler(req, dynamicData, user);
-    }
+    if (user) return handler(req, dynamicData, user);
 
     if (allowTokenAuth) {
       const token = req.headers.get('Authorization');
