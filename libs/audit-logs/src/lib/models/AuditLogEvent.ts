@@ -6,6 +6,10 @@ export enum AuditLogEventType {
   VERSION_BUILD = 'VERSION_BUILD',
   DEPENDENCY_CREATE = 'DEPENDENCY_CREATE',
   DEPENDENCY_DELETE = 'DEPENDENCY_DELETE',
+  SCOPE_CREATE = 'SCOPE_CREATE',
+  SCOPE_DELETE = 'SCOPE_DELETE',
+  SCOPE_USER_ADD = 'SCOPE_USER_ADD',
+  SCOPE_USER_REMOVE = 'SCOPE_USER_REMOVE',
 }
 
 export interface AuditLogEvent {
@@ -15,4 +19,6 @@ export interface AuditLogEvent {
   readonly appId?: number;
   readonly versionId?: number;
   readonly dependencyId?: number;
+  readonly scopeId?: number;
+  readonly targetUserId?: string; // Used for SCOPE_USER_ADD and SCOPE_USER_DELETE
 }

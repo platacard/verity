@@ -15,5 +15,6 @@ export type AppWithVersionsAndDeps = Prisma.AppGetPayload<{
         };
       };
     };
+    scope: true;
   };
 }>;

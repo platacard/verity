@@ -6,5 +6,6 @@ export type AuditLogsExtended = Prisma.AuditLogsGetPayload<{
     app: true;
     version: true;
     dependency: true;
+    scope: true;
   };
 }>;

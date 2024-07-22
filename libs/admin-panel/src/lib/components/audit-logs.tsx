@@ -13,6 +13,7 @@ export async function AuditLogs() {
             <TableCell>Timestamp</TableCell>
             <TableCell>Action</TableCell>
             <TableCell>User</TableCell>
+            <TableCell>Scope</TableCell>
             <TableCell>App</TableCell>
             <TableCell>Version</TableCell>
             <TableCell>DependencyId</TableCell>
@@ -25,6 +26,7 @@ export async function AuditLogs() {
               <TableCell>{log.timestamp.toISOString()}</TableCell>
               <TableCell>{log.action}</TableCell>
               <TableCell>{log.user?.email}</TableCell>
+              <TableCell>{log.scope?.name}</TableCell>
               <TableCell>{log.app?.name}</TableCell>
               <TableCell>{log.version?.value}</TableCell>
               <TableCell>{log.dependency?.id}</TableCell>

@@ -45,6 +45,13 @@ export default async function Component() {
 
           {/* TODO: temporary here */}
           <Link
+            href="/scopes"
+            className="text-sm font-medium hover:underline underline-offset-4"
+            prefetch={false}
+          >
+            Scopes
+          </Link>
+          <Link
             href="/admin"
             className="text-sm font-medium hover:underline underline-offset-4"
             prefetch={false}

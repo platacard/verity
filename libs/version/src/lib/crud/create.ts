@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { User, Version } from '@prisma/client';
+import { App, User, Version } from '@prisma/client';
 import { z } from 'zod';
 
 import { AuditLogEventType, logEvent } from '@verity/audit-logs';
@@ -18,10 +18,24 @@ export const createVersion = async (data: z.infer<typeof createVersionSchema>, u
   }
 
   try {
+    const appWithScopeId = await prisma.app.findUnique({
+      where: {
+        id: parsedData.appId,
+      },
+      select: {
+        scopeId: true,
+      },
+    });
+
+    if (!appWithScopeId) {
+      return NextResponse.json({ error: 'App not found' }, { status: 404 });
+    }
+
     const version: Version = await prisma.version.create({
       data: {
         appId: parsedData.appId,
         value: parsedData.value,
+        scopeId: appWithScopeId.scopeId,
         builtAt: parsedData.builtAt ?? null,
       },
     });
@@ -32,6 +46,7 @@ export const createVersion = async (data: z.infer<typeof createVersionSchema>, u
       userId: user.id,
       appId: version.appId,
       versionId: version.id,
+      scopeId: version.scopeId,
     });
 
     return NextResponse.json(version);

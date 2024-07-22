@@ -6,6 +6,7 @@ import { AppWithVersionsAndDeps } from '@verity/app';
 
 import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { AppComponent } from './app-component';
+import { CreateAppModal, CreateAppModalResult } from './create-app-modal';
 import { InputModal } from './input-modal';
 
 export default function AppsList() {
@@ -28,12 +29,12 @@ export default function AppsList() {
     }
   };
 
-  const handleAddApp = async (name: string) => {
+  const handleAddApp = async (app: CreateAppModalResult) => {
     try {
       const response = await fetch('api/apps', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name: app.name, scopeId: app.scopeId }),
       });
       const data: AppWithVersionsAndDeps = await response.json();
 
@@ -62,15 +63,7 @@ export default function AppsList() {
         <div className="grid gap-6">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold li">Apps</h1>
-            <InputModal
-              config={{
-                buttonLabel: '+ Create App',
-                title: 'Create new App',
-                description: 'Create new application instance',
-                inputLabel: 'Name:',
-              }}
-              onFormSubmit={handleAddApp}
-            />
+            <CreateAppModal onFormSubmit={handleAddApp} />
           </div>
           <div className="grid gap-4">
             {apps.map((item) => (
