@@ -16,7 +16,7 @@ CREATE UNIQUE INDEX "UserRole_id_key" ON "UserRole"("id");
 -- Populate with default data
 INSERT INTO "UserRole" (id, name, description) VALUES
 ('admin', 'Admin', 'Allows full access to all resources'),
-('user', 'User', 'Regular user');
+('user', 'User', 'User with readonly permissions');
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "UserRole"("id") ON DELETE SET NULL ON UPDATE CASCADE;

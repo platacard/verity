@@ -11,6 +11,7 @@ export const getLogs = async () => {
         app: true,
         version: true,
         dependency: true,
+        scope: true,
       },
     });
   } catch (error) {

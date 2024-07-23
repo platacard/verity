@@ -80,6 +80,9 @@ export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps
               <span className="font-bold">Name:</span> <span>{application.name}</span>
             </div>
             <div>
+              <span className="font-bold">Scope:</span> <span>{application.scope.name}</span>
+            </div>
+            <div>
               <span className="font-bold">Created:</span>{' '}
               <span>{new Date(app.createdAt).toISOString()}</span>
             </div>

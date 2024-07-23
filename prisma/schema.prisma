@@ -22,7 +22,8 @@ model User {
 
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
-  role      UserRole?    @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  role      UserRole?   @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  scopes    Scope[]     @relation("UserScopes")
   auditLogs AuditLogs[]
 }
 
@@ -82,11 +83,14 @@ model Authenticator {
 }
 
 model App {
-  id        Int         @id @unique @default(autoincrement())
+  id        Int       @id @unique @default(autoincrement())
   name      String
-  createdAt DateTime    @default(now())
-  deleted   Boolean     @default(false)
+  createdAt DateTime  @default(now())
+  deleted   Boolean   @default(false)
   versions  Version[]
+  scopeId   Int
+
+  scope     Scope       @relation(fields: [scopeId], references: [id], onDelete: Cascade)
   auditLogs AuditLogs[]
 }
 
@@ -97,10 +101,12 @@ model Version {
   builtAt   DateTime?
   appId     Int
   deleted   Boolean   @default(false)
+  scopeId   Int
 
   dependencies Dependency[] @relation("AppVersionDependency")
   dependsOn    Dependency[] @relation("AppVersionDependsOn")
   app          App          @relation(fields: [appId], references: [id], onDelete: Cascade)
+  scope        Scope        @relation(fields: [scopeId], references: [id], onDelete: Cascade)
   auditLogs    AuditLogs[]
 }
 
@@ -110,10 +116,13 @@ model Dependency {
   dependantAppVersionId  Int
   dependencyAppVersionId Int
   deleted                Boolean  @default(false)
+  scopeId                Int
 
-  dependantAppVersion  Version     @relation("AppVersionDependency", fields: [dependantAppVersionId], references: [id], onDelete: Cascade)
-  dependencyAppVersion Version     @relation("AppVersionDependsOn", fields: [dependencyAppVersionId], references: [id], onDelete: Cascade)
-  auditLogs            AuditLogs[]
+  dependantAppVersion  Version @relation("AppVersionDependency", fields: [dependantAppVersionId], references: [id], onDelete: Cascade)
+  dependencyAppVersion Version @relation("AppVersionDependsOn", fields: [dependencyAppVersionId], references: [id], onDelete: Cascade)
+
+  scope     Scope       @relation(fields: [scopeId], references: [id], onDelete: Cascade)
+  auditLogs AuditLogs[]
 }
 
 model AuditLogs {
@@ -124,11 +133,13 @@ model AuditLogs {
   appId        Int?
   versionId    Int?
   dependencyId Int?
+  scopeId      Int?
 
   user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   app        App?        @relation(fields: [appId], references: [id], onDelete: SetNull)
   version    Version?    @relation(fields: [versionId], references: [id], onDelete: SetNull)
   dependency Dependency? @relation(fields: [dependencyId], references: [id], onDelete: SetNull)
+  scope      Scope?      @relation(fields: [scopeId], references: [id], onDelete: SetNull)
 }
 
 model UserRole {
@@ -136,4 +147,18 @@ model UserRole {
   name        String
   description String?
   User        User[]
+}
+
+model Scope {
+  id          Int      @id @unique @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  deleted     Boolean  @default(false)
+
+  users        User[]       @relation("UserScopes")
+  apps         App[]
+  versions     Version[]
+  dependencies Dependency[]
+  auditLogs    AuditLogs[]
 }

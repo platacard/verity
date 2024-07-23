@@ -28,6 +28,7 @@ export const getApps = async () => {
             },
           },
         },
+        scope: true,
       },
     })) ?? [];
 

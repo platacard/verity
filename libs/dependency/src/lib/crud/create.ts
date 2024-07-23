@@ -22,10 +22,44 @@ export const createDependency = async (
   }
 
   try {
+    const dependantAppVersionWithScopeId = await prisma.version.findUnique({
+      where: {
+        id: parsedData.dependantAppVersionId,
+      },
+      select: {
+        scopeId: true,
+      },
+    });
+
+    const dependencyAppVersionWithScopeId = await prisma.version.findUnique({
+      where: {
+        id: parsedData.dependencyAppVersionId,
+      },
+      select: {
+        scopeId: true,
+      },
+    });
+
+    if (!dependantAppVersionWithScopeId) {
+      return NextResponse.json({ error: 'Dependant app version not found' }, { status: 404 });
+    }
+
+    if (!dependencyAppVersionWithScopeId) {
+      return NextResponse.json({ error: 'Dependency app version not found' }, { status: 404 });
+    }
+
+    if (dependantAppVersionWithScopeId.scopeId !== dependencyAppVersionWithScopeId.scopeId) {
+      return NextResponse.json(
+        { error: 'Dependant and dependency app versions are not in the same scope' },
+        { status: 400 },
+      );
+    }
+
     const dependency: DependencyWithAppVersion = await prisma.dependency.create({
       data: {
         dependantAppVersionId: parsedData.dependantAppVersionId,
         dependencyAppVersionId: parsedData.dependencyAppVersionId,
+        scopeId: dependantAppVersionWithScopeId.scopeId,
       },
       include: {
         dependantAppVersion: {

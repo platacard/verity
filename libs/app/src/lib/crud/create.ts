@@ -21,6 +21,10 @@ export const createApp = async (data: z.infer<typeof createAppSchema>, user: Use
     const app: App = await prisma.app.create({
       data: {
         name: parsedData.name,
+        scopeId: parsedData.scopeId,
+      },
+      include: {
+        scope: true,
       },
     });
 
@@ -28,6 +32,7 @@ export const createApp = async (data: z.infer<typeof createAppSchema>, user: Use
       action: AuditLogEventType.APPLICATION_CREATE,
       timestamp: app.createdAt,
       userId: user.id,
+      scopeId: app.scopeId,
       appId: app.id,
     });
 
