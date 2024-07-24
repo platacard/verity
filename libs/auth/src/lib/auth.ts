@@ -1,3 +1,6 @@
+import 'next-auth';
+import 'next-auth/jwt';
+
 import NextAuth from 'next-auth';
 import Keycloak from 'next-auth/providers/keycloak';
 import { NextRequest, NextResponse } from 'next/server';
@@ -8,22 +11,64 @@ import { User } from '@prisma/client';
 import { prisma } from '@verity/prisma';
 import { DynamicRouteData } from '@verity/shared/server';
 import { DefaultUserRoles } from '@verity/user-roles';
+import { parseJwt } from '@verity/utils';
 
 import { getUserFromSession } from './get-user-from-session';
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    idToken?: string;
+  }
+}
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id?: string;
+      name?: string;
+      email?: string;
+      image?: string;
+      groups?: string[];
+    };
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Keycloak],
   session: { strategy: 'jwt' },
   events: {
+    /**
+     * Set the role of the first user in the database to admin,
+     * and all subsequent users to regular user.
+     * @param user
+     */
     async createUser({ user }) {
       const usersCount = await prisma.user.count();
-      if (usersCount === 1) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { roleId: DefaultUserRoles.ADMIN },
-        });
+      const roleId = usersCount === 1 ? DefaultUserRoles.ADMIN : DefaultUserRoles.USER;
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { roleId },
+      });
+    },
+  },
+  callbacks: {
+    jwt({ token, account }) {
+      if (account?.id_token) {
+        token.idToken = account.id_token;
       }
+      return token;
+    },
+    session({ session, token }) {
+      if (token.idToken) {
+        const userData = parseJwt<{ groups: string[] }>(token.idToken);
+
+        if (userData?.groups) {
+          session.user.groups = userData.groups;
+        }
+      }
+      return session;
     },
   },
 });
