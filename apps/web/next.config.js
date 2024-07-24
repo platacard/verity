@@ -18,8 +18,8 @@ if (!process.env.DATABASE_URL) {
   }
 
   process.env.DATABASE_URL = `postgresql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`;
-  // TODO: remove after debug
-  console.log('DATABASE_URL:', process.env.DATABASE_URL);
+
+  console.log('DATABASE_URL was built from variables: ', process.env.DATABASE_URL);
 }
 
 /**
