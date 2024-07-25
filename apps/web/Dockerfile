@@ -18,7 +18,6 @@ COPY --from=builder /app/apps/web/public ./apps/web/public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
-COPY build-db-url.js .
 
 EXPOSE 3000
 
@@ -26,5 +25,5 @@ ENV PORT 3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD node build-db-url.js && export $(cat .env.database | xargs) && HOSTNAME="0.0.0.0" node apps/web/server.js
+CMD HOSTNAME="0.0.0.0" node apps/web/server.js
 
