@@ -4,6 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "build-db-url": "node build-db-url.js",
     "prepare": "husky install",
     "prisma:gen": "nx prisma:generate",
     "start": "nx dev web"
