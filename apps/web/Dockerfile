@@ -4,6 +4,7 @@ COPY . .
 
 RUN npm ci
 RUN npx nx build web -c=production
+RUN node build-db-url.js
 
 FROM node:20-alpine AS runner
 WORKDIR /app
@@ -19,9 +20,7 @@ COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
 
-COPY --from=builder /app/build-db-url.js .
-
-RUN node build-db-url.js
+COPY --from=builder /app/.env.database .
 
 EXPOSE 3000
 
@@ -29,4 +28,4 @@ ENV PORT 3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD HOSTNAME="0.0.0.0" node apps/web/server.js
+CMD export $(cat .env.database | xargs) && HOSTNAME="0.0.0.0" node apps/web/server.js

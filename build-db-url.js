@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const { DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_HOST, DATABASE_PORT, DATABASE_NAME } =
   process.env;
 
@@ -14,4 +16,4 @@ if (
 
 const databaseUrl = `postgresql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`;
 
-process.env.DATABASE_URL = databaseUrl;
+fs.writeFileSync('.env.database', `DATABASE_URL=${databaseUrl}\n`);
