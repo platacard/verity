@@ -58,6 +58,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.id_token) {
         token.idToken = account.id_token;
       }
+      if (account?.access_token) {
+        token.accessToken = account.access_token;
+      }
       return token;
     },
     session({ session, token }) {
