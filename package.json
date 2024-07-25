@@ -4,9 +4,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "build-db-url": "node build-db-url.js",
     "prepare": "husky install",
     "prisma:gen": "nx prisma:generate",
-    "start": "nx dev web"
+    "start": "npm run build-db-url && nx dev web"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.1.0",

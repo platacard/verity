@@ -19,6 +19,10 @@ COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
 
+COPY --from=builder /app/build-db-url.js .
+
+RUN node build-db-url.js
+
 EXPOSE 3000
 
 ENV PORT 3000
