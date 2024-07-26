@@ -18,6 +18,9 @@ COPY --from=builder /app/apps/web/public ./apps/web/public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/prisma/schema.prisma ./prisma/schema.prisma
+COPY --from=builder /app/prisma/migrations ./prisma/migrations
+
 
 EXPOSE 3000
 
