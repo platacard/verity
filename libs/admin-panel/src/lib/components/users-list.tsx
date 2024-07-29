@@ -90,7 +90,7 @@ export const UsersList = ({ currentUser }: UsersListProps) => {
               <TableCell>{user.email}</TableCell>
               <TableCell>
                 <Select
-                  disabled={currentUser.id === user.id}
+                  disabled={true}
                   value={user.role ? user.role.id : ''}
                   onValueChange={(roleId) => handleUserRoleChange(user.id, roleId)}
                 >
