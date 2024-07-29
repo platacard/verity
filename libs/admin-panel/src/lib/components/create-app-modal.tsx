@@ -2,7 +2,6 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 
-import { AppWithVersionsAndDeps } from '@verity/app';
 import { ScopeExtended } from '@verity/scopes';
 import { Button } from '@verity/ui/button';
 import {
@@ -22,7 +21,7 @@ import { useFetchErrorToast } from '../utils/show-fetch-error';
 
 export interface CreateAppModalResult {
   readonly name: string | null;
-  readonly scopeId: number | null;
+  readonly scopeId: string | null;
 }
 
 export const CreateAppModal = ({
@@ -63,7 +62,7 @@ export const CreateAppModal = ({
     setResult((prev) => ({ ...prev, name }));
   };
 
-  const handleScopeChange = (scopeId: number) => {
+  const handleScopeChange = (scopeId: string) => {
     const scope = scopesList.find((scope) => scope.id === scopeId);
     setSelectedScope(scope || null);
     setResult((prev) => ({ ...prev, scopeId }));
@@ -98,7 +97,7 @@ export const CreateAppModal = ({
                 onChange={(e) => handleNameChange(e.target.value)}
               />
               <Label className="mt-4">Scope:</Label>
-              <Select required={true} onValueChange={(id) => handleScopeChange(+id)}>
+              <Select required={true} onValueChange={(id) => handleScopeChange(id)}>
                 <SelectTrigger>
                   <SelectValue>{selectedScope ? selectedScope.name : 'Select a Scope'}</SelectValue>
                 </SelectTrigger>

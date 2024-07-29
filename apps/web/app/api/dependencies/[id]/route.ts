@@ -8,6 +8,6 @@ import { DynamicRouteData } from '@verity/shared/server';
 
 export const DELETE = withAuth(
   async (request: NextRequest, routeData: DynamicRouteData, user: User) => {
-    return markDependencyAsDeleted(parseInt(routeData.params.id), user);
+    return markDependencyAsDeleted(routeData.params.id, user);
   },
 );

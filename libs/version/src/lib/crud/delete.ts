@@ -5,7 +5,7 @@ import { User } from '@prisma/client';
 import { AuditLogEventType, logEvent } from '@verity/audit-logs';
 import { prisma } from '@verity/prisma';
 
-export const markVersionAsDeleted = async (id: number, user: User) => {
+export const markVersionAsDeleted = async (id: string, user: User) => {
   try {
     const updVersion = await prisma.version.update({
       where: { id },

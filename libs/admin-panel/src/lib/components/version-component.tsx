@@ -12,7 +12,7 @@ import { DependencyModal } from './dependency-modal';
 
 export interface VersionComponentProps {
   readonly version: VersionWithDeps;
-  readonly onDelete: (id: number) => void;
+  readonly onDelete: (id: string) => void;
 }
 
 export function VersionComponent({ version, onDelete }: VersionComponentProps) {
@@ -23,7 +23,7 @@ export function VersionComponent({ version, onDelete }: VersionComponentProps) {
     setVersion(version);
   }, [version]);
 
-  const handleCreateDependency = async (dependencyAppVersionId: number) => {
+  const handleCreateDependency = async (dependencyAppVersionId: string) => {
     try {
       const response = await fetch('api/dependencies', {
         method: 'POST',
@@ -50,7 +50,7 @@ export function VersionComponent({ version, onDelete }: VersionComponentProps) {
     }
   };
 
-  const handleDeleteDependency = async (id: number) => {
+  const handleDeleteDependency = async (id: string) => {
     try {
       const response = await fetch(`api/dependencies/${id}`, { method: 'DELETE' });
 

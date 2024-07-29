@@ -5,7 +5,7 @@ import { User } from '@prisma/client';
 import { AuditLogEventType, logEvent } from '@verity/audit-logs';
 import { prisma } from '@verity/prisma';
 
-export const markDependencyAsDeleted = async (id: number, user: User) => {
+export const markDependencyAsDeleted = async (id: string, user: User) => {
   try {
     const updDependency = await prisma.dependency.update({
       where: { id },

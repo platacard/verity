@@ -7,7 +7,6 @@ import { AppWithVersionsAndDeps } from '@verity/app';
 import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { AppComponent } from './app-component';
 import { CreateAppModal, CreateAppModalResult } from './create-app-modal';
-import { InputModal } from './input-modal';
 
 export default function AppsList() {
   const [apps, setApps] = useState([] as AppWithVersionsAndDeps[]);
@@ -47,7 +46,7 @@ export default function AppsList() {
     }
   };
 
-  const handleDeleteApp = async (id: number) => {
+  const handleDeleteApp = async (id: string) => {
     try {
       await fetch(`api/apps/${id}`, { method: 'DELETE' });
 
