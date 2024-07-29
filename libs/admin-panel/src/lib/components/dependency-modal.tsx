@@ -21,8 +21,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useFetchErrorToast } from '../utils/show-fetch-error';
 
 export interface DependencyModalProps {
-  readonly currentAppId: number;
-  readonly onFormSubmit: (versionId: number) => void;
+  readonly currentAppId: string;
+  readonly onFormSubmit: (versionId: string) => void;
 }
 
 export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalProps) {
@@ -62,14 +62,14 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
     setIsOpen(false);
   };
 
-  const handleAppSelect = (id: number) => {
+  const handleAppSelect = (id: string) => {
     const app = appsList.find((app) => app.id === id) ?? null;
 
     setSelectedApp(app);
     setSelectedVersion(null);
   };
 
-  const handleVersionChange = (id: number) => {
+  const handleVersionChange = (id: string) => {
     const version = selectedApp?.versions.find((version) => version.id === id) ?? null;
     setSelectedVersion(version);
   };
@@ -96,7 +96,7 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
           <div className="flex flex-col gap-4 py-4">
             <div>
               <Label>Available Apps:</Label>
-              <Select onValueChange={(id) => handleAppSelect(+id)}>
+              <Select onValueChange={(id) => handleAppSelect(id)}>
                 <SelectTrigger>
                   <SelectValue>{selectedApp ? selectedApp.name : 'Select an app'}</SelectValue>
                 </SelectTrigger>
@@ -114,7 +114,7 @@ export function DependencyModal({ currentAppId, onFormSubmit }: DependencyModalP
               <Select
                 disabled={!selectedApp}
                 required
-                onValueChange={(id) => handleVersionChange(+id)}
+                onValueChange={(id) => handleVersionChange(id)}
               >
                 <SelectTrigger>
                   <SelectValue>{selectedVersion?.value ?? ''}</SelectValue>

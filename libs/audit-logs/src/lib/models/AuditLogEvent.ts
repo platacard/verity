@@ -16,9 +16,9 @@ export interface AuditLogEvent {
   readonly action: AuditLogEventType;
   readonly timestamp: Date;
   readonly userId: string;
-  readonly appId?: number;
-  readonly versionId?: number;
-  readonly dependencyId?: number;
-  readonly scopeId?: number;
+  readonly appId?: string;
+  readonly versionId?: string;
+  readonly dependencyId?: string;
+  readonly scopeId?: string;
   readonly targetUserId?: string; // Used for SCOPE_USER_ADD and SCOPE_USER_DELETE
 }

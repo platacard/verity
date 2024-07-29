@@ -10,13 +10,13 @@ export const PUT = withAuth(
   async (request: NextRequest, routeData: DynamicRouteData, user: User) => {
     const data = await request.json();
 
-    return markVersionAsBuilt(parseInt(routeData.params.id), data, user);
+    return markVersionAsBuilt(routeData.params.id, data, user);
   },
   true,
 );
 
 export const DELETE = withAuth(
   async (request: NextRequest, routeData: DynamicRouteData, user: User) => {
-    return markVersionAsDeleted(parseInt(routeData.params.id), user);
+    return markVersionAsDeleted(routeData.params.id, user);
   },
 );

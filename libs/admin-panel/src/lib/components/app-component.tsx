@@ -13,7 +13,7 @@ import { VersionComponent } from './version-component';
 export interface AppComponentProps {
   readonly app: AppWithVersionsAndDeps;
   readonly updateAppList: () => void;
-  readonly onDelete: (id: number) => void;
+  readonly onDelete: (id: string) => void;
 }
 
 export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps) {
@@ -45,7 +45,7 @@ export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps
     }
   };
 
-  const handleDeleteVersion = async (id: number) => {
+  const handleDeleteVersion = async (id: string) => {
     try {
       const response = await fetch(`api/versions/${id}`, { method: 'DELETE' });
 

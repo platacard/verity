@@ -6,6 +6,6 @@ export const createScopeSchema = z.object({
 });
 
 export const updateScopeUserSchema = z.object({
-  userId: z.string().min(1, 'User id is required'),
-  scopeId: z.number().int().positive('Scope id is required'),
+  userId: z.string().min(1, 'userId is required'),
+  scopeId: z.string().min(1, 'scopeId is required'),
 });

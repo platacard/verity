@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { App, User, Version } from '@prisma/client';
+import { User, Version } from '@prisma/client';
 import { z } from 'zod';
 
 import { AuditLogEventType, logEvent } from '@verity/audit-logs';

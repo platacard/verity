@@ -15,7 +15,7 @@ export const getApplicationDependencies = async (request: NextRequest) => {
 
   const rawAppVersion = await prisma.version.findFirst({
     where: {
-      appId: parseInt(appId),
+      appId,
       value: version,
       deleted: false,
     },

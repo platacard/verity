@@ -9,7 +9,7 @@ import { prisma } from '@verity/prisma';
 import { markVersionAsBuiltSchema } from './schemas';
 
 export const markVersionAsBuilt = async (
-  id: number,
+  id: string,
   data: z.infer<typeof markVersionAsBuiltSchema>,
   user: User,
 ) => {

@@ -5,5 +5,5 @@ import { getVersionDependencies } from '@verity/dependency';
 import { DynamicRouteData } from '@verity/shared/server';
 
 export const GET = withAuth(async (request: NextRequest, routeData: DynamicRouteData) => {
-  return getVersionDependencies(parseInt(routeData.params.id));
+  return getVersionDependencies(routeData.params.id);
 });

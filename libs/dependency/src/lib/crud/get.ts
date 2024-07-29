@@ -4,7 +4,7 @@ import { Dependency } from '@prisma/client';
 
 import { prisma } from '@verity/prisma';
 
-export const getVersionDependencies = async (versionId: number) => {
+export const getVersionDependencies = async (versionId: string) => {
   try {
     const dependencies: Dependency[] =
       (await prisma.dependency.findMany({

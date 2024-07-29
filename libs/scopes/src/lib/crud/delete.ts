@@ -5,7 +5,7 @@ import { User } from '@prisma/client';
 import { AuditLogEventType, logEvent } from '@verity/audit-logs';
 import { prisma } from '@verity/prisma';
 
-export const markScopeAsDeleted = async (id: number, user: User) => {
+export const markScopeAsDeleted = async (id: string, user: User) => {
   try {
     // Marks the scope as deleted
 

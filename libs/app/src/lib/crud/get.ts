@@ -35,7 +35,7 @@ export const getApps = async () => {
   return NextResponse.json(apps);
 };
 
-export const getAppById = async (id: number) => {
+export const getAppById = async (id: string) => {
   const app: App | null = await prisma.app.findUnique({
     where: { id },
   });

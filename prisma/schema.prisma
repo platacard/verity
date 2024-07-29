@@ -4,7 +4,7 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
 }
 
@@ -84,25 +84,25 @@ model Authenticator {
 }
 
 model App {
-  id        Int       @id @unique @default(autoincrement())
+  id        String    @id @unique @default(cuid())
   name      String
   createdAt DateTime  @default(now())
   deleted   Boolean   @default(false)
   versions  Version[]
-  scopeId   Int
+  scopeId   String
 
   scope     Scope       @relation(fields: [scopeId], references: [id], onDelete: Cascade)
   auditLogs AuditLogs[]
 }
 
 model Version {
-  id        Int       @id @unique @default(autoincrement())
+  id        String    @id @unique @default(cuid())
   createdAt DateTime  @default(now())
   value     String
   builtAt   DateTime?
-  appId     Int
+  appId     String
   deleted   Boolean   @default(false)
-  scopeId   Int
+  scopeId   String
 
   dependencies Dependency[] @relation("AppVersionDependency")
   dependsOn    Dependency[] @relation("AppVersionDependsOn")
@@ -112,12 +112,12 @@ model Version {
 }
 
 model Dependency {
-  id                     Int      @id @unique @default(autoincrement())
+  id                     String   @id @unique @default(cuid())
   createdAt              DateTime @default(now())
-  dependantAppVersionId  Int
-  dependencyAppVersionId Int
+  dependantAppVersionId  String
+  dependencyAppVersionId String
   deleted                Boolean  @default(false)
-  scopeId                Int
+  scopeId                String
 
   dependantAppVersion  Version @relation("AppVersionDependency", fields: [dependantAppVersionId], references: [id], onDelete: Cascade)
   dependencyAppVersion Version @relation("AppVersionDependsOn", fields: [dependencyAppVersionId], references: [id], onDelete: Cascade)
@@ -127,14 +127,14 @@ model Dependency {
 }
 
 model AuditLogs {
-  id           Int      @id @unique @default(autoincrement())
+  id           String   @id @unique @default(cuid())
   timestamp    DateTime
   action       String
   userId       String?
-  appId        Int?
-  versionId    Int?
-  dependencyId Int?
-  scopeId      Int?
+  appId        String?
+  versionId    String?
+  dependencyId String?
+  scopeId      String?
 
   user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   app        App?        @relation(fields: [appId], references: [id], onDelete: SetNull)
@@ -151,7 +151,7 @@ model UserRole {
 }
 
 model Scope {
-  id          Int      @id @unique @default(autoincrement())
+  id          String   @id @unique @default(cuid())
   name        String
   description String?
   createdAt   DateTime @default(now())
