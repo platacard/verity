@@ -1,5 +1,8 @@
 # Verity
 
+![Version](https://img.shields.io/github/v/release/platacard/verity?label=Verity&logo=github)
+![Latest Package Version](https://img.shields.io/github/v/tag/platacard/verity?label=Verity-CLI&logo=npm)
+
 Verity is a service that allows you to create new versions of various applications and connect them
 to each other. Manage your applications easily and efficiently.
 
@@ -31,29 +34,35 @@ git clone https://github.com/platacard/verity.git
 cd verity
 ```
 
-3. Start the development environment:
+3. Create a `.env` file in the root of the project and fill like in [this](.env.template) example:
+
+```bash
+touch .env
+```
+
+4. Start the development environment:
 
 ```bash
 docker-compose up -d
 ```
 
-4. Install the dependencies:
+5. Install the dependencies:
 
 ```bash
 npm install
 ```
 
-5. Start the development server:
+6. Start the development server:
 
 ```bash
 npm start
 ```
 
-6. Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
+7. Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
 
-7. Login with the following credentials:
+8. Login with the following credentials:
 
 - **Username:** verity
 - **Password:** verity
 
-8. You're all set! 🚀
+9. You're all set! 🚀
