@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { AdminPanel } from '@verity/admin-panel';
+import { AdminPanel, Header } from '@verity/admin-panel';
 import { auth } from '@verity/auth/server';
 
 export default async function Component() {
@@ -9,5 +9,10 @@ export default async function Component() {
     redirect('/api/auth/signin');
   }
 
-  return <AdminPanel />;
+  return (
+    <>
+      <Header />
+      <AdminPanel />
+    </>
+  );
 }

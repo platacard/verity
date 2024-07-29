@@ -1,3 +1,5 @@
+export * from './header';
+
 export * from './admin-panel';
 
 export * from './user-profile';

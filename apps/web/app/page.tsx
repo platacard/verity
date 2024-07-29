@@ -42,42 +42,12 @@ export default async function Component() {
           >
             Contact
           </Link>
-
-          {/* TODO: temporary here */}
           <Link
-            href="/scopes"
-            className="text-sm font-medium hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Scopes
-          </Link>
-          <Link
-            href="/admin"
-            className="text-sm font-medium hover:underline underline-offset-4"
+            href="/apps"
+            className="text-sm font-bold hover:underline underline-offset-4"
             prefetch={false}
           >
             Admin
-          </Link>
-          <Link
-            href="/profile"
-            className="text-sm font-medium hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Profile
-          </Link>
-          <Link
-            href="/users"
-            className="text-sm font-medium hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Users
-          </Link>
-          <Link
-            href="/audit-logs"
-            className="text-sm font-medium hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Audit Logs
           </Link>
         </nav>
       </header>
