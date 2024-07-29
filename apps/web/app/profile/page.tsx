@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { UserProfile } from '@verity/admin-panel';
+import { Header, UserProfile } from '@verity/admin-panel';
 import { auth, getUserFromSession } from '@verity/auth/server';
 
 export default async function ProfilePage() {
@@ -11,5 +11,12 @@ export default async function ProfilePage() {
 
   const user = await getUserFromSession(session);
 
-  return user && <UserProfile user={user} />;
+  return (
+    user && (
+      <>
+        <Header />
+        <UserProfile user={user} />
+      </>
+    )
+  );
 }

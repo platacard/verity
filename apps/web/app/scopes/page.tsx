@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { ScopesComponent } from '@verity/admin-panel';
+import { Header, ScopesComponent } from '@verity/admin-panel';
 import { auth } from '@verity/auth/server';
 
 export default async function ScopesPage() {
@@ -9,5 +9,10 @@ export default async function ScopesPage() {
     redirect('/api/auth/signin');
   }
 
-  return <ScopesComponent />;
+  return (
+    <>
+      <Header />
+      <ScopesComponent />
+    </>
+  );
 }

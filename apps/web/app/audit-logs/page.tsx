@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { AuditLogs } from '@verity/admin-panel';
+import { AuditLogs, Header } from '@verity/admin-panel';
 import { auth } from '@verity/auth/server';
 
 export default async function AuditLogsPage() {
@@ -9,5 +9,10 @@ export default async function AuditLogsPage() {
     redirect('/api/auth/signin');
   }
 
-  return <AuditLogs />;
+  return (
+    <>
+      <Header />
+      <AuditLogs />
+    </>
+  );
 }
