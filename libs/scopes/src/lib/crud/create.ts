@@ -28,8 +28,8 @@ export const createScope = async (data: z.infer<typeof createScopeSchema>, user:
     await logEvent({
       action: AuditLogEventType.SCOPE_CREATE,
       timestamp: scope.createdAt,
-      userId: user.id,
       scopeId: scope.id,
+      userId: user.id,
     });
 
     return NextResponse.json(scope);
