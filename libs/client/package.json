@@ -1,5 +1,5 @@
 {
-  "name": "verity-client",
+  "name": "@verityjs/client",
   "version": "1.14.1",
   "repository": {
     "type": "git",
