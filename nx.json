@@ -62,7 +62,7 @@
     }
   },
   "release": {
-    "projects": ["libs/cli", "apps/web"],
+    "projects": ["libs/cli", "apps/web", "libs/client"],
     "version": {
       "conventionalCommits": true
     },
