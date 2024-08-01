@@ -1,5 +1,5 @@
 {
-  "name": "verity-cli",
+  "name": "@verityjs/cli",
   "version": "1.14.0",
   "repository": {
     "type": "git",
