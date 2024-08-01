@@ -1,5 +1,5 @@
 {
-  "name": "@platacard/verity-cli",
+  "name": "verity-cli",
   "version": "1.13.1",
   "repository": {
     "type": "git",
