@@ -6,11 +6,8 @@ export const getApplicationDependencies = async (request: NextRequest) => {
   const appId = request.nextUrl.searchParams.get('appId');
   const version = request.nextUrl.searchParams.get('version');
 
-  if (!appId || !version || isNaN(parseInt(appId))) {
-    return NextResponse.json(
-      { error: 'appId and version params are required, appId must be a number' },
-      { status: 400 },
-    );
+  if (!appId || !version) {
+    return NextResponse.json({ error: 'appId and version params are required' }, { status: 400 });
   }
 
   const rawAppVersion = await prisma.version.findFirst({

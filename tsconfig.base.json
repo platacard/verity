@@ -22,6 +22,7 @@
       "@verity/auth": ["libs/auth/src/index.ts"],
       "@verity/auth/server": ["libs/auth/src/server.ts"],
       "@verity/cli": ["libs/cli/src/index.ts"],
+      "@verity/client": ["libs/client/src/index.ts"],
       "@verity/dependency": ["libs/dependency/src/index.ts"],
       "@verity/deps-api": ["libs/deps-api/src/server.ts"],
       "@verity/prisma": ["libs/prisma/src/index.ts"],
