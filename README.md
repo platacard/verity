@@ -1,7 +1,8 @@
 # Verity
 
 ![Version](https://img.shields.io/github/v/release/platacard/verity?label=Verity&logo=github)
-![Latest Package Version](https://img.shields.io/github/v/tag/platacard/verity?label=Verity-CLI&logo=npm)
+![Latest Package Version](https://img.shields.io/npm/v/@verityjs/cli?label=@verityjs/cli&logo=npm)
+![Latest Package Version](https://img.shields.io/npm/v/@verityjs/client?label=@verityjs/client&logo=npm)
 
 Verity is a service that allows you to create new versions of various applications and connect them
 to each other. Manage your applications easily and efficiently.

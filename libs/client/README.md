@@ -1,4 +1,4 @@
-# @platacard/verity-client
+# @verityjs/client
 
 This library provides a client for the Verity that allows you to load dependencies.
 
