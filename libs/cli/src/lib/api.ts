@@ -30,6 +30,23 @@ export const getAppVersions = async () => {
   return appVersionResp?.data ?? [];
 };
 
+export const markVersionAsBuilt = async (versionId: string) => {
+  const versionResp = await axios
+    .put(
+      `${VERITY_URL}/api/versions/${versionId}`,
+      {
+        builtAt: new Date().toISOString(),
+      },
+      requestConfig,
+    )
+    .catch(() => {
+      console.error('Error marking Version as built');
+      process.exit(1);
+    });
+
+  return versionResp.data;
+};
+
 export const createVersion = async () => {
   const versionResp = await axios
     .post(
@@ -43,23 +60,6 @@ export const createVersion = async () => {
     )
     .catch(() => {
       console.error('Error creating Version');
-      process.exit(1);
-    });
-
-  return versionResp.data;
-};
-
-export const markVersionAsBuilt = async (versionId: number) => {
-  const versionResp = await axios
-    .put(
-      `${VERITY_URL}/api/versions/${versionId}`,
-      {
-        builtAt: new Date().toISOString(),
-      },
-      requestConfig,
-    )
-    .catch(() => {
-      console.error('Error marking Version as built');
       process.exit(1);
     });
 
