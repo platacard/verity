@@ -16,7 +16,7 @@ const requestConfig = {
 
 export const getApp = async () => {
   const appVersionResp = await axios
-    .get(`${VERITY_URL}/apps/${VERITY_APP_ID}`, requestConfig)
+    .get(`${VERITY_URL}/api/apps/${VERITY_APP_ID}`, requestConfig)
     .catch(() => null);
 
   return appVersionResp?.data ?? null;
@@ -24,7 +24,7 @@ export const getApp = async () => {
 
 export const getAppVersions = async () => {
   const appVersionResp = await axios
-    .get(`${VERITY_URL}/apps/${VERITY_APP_ID}/versions`, requestConfig)
+    .get(`${VERITY_URL}/api/apps/${VERITY_APP_ID}/versions`, requestConfig)
     .catch(() => null);
 
   return appVersionResp?.data ?? [];
@@ -33,9 +33,9 @@ export const getAppVersions = async () => {
 export const createVersion = async () => {
   const versionResp = await axios
     .post(
-      `${VERITY_URL}/versions`,
+      `${VERITY_URL}/api/versions`,
       JSON.stringify({
-        appId: VERITY_APP_ID && parseInt(VERITY_APP_ID),
+        appId: VERITY_APP_ID,
         value: VERITY_APP_VERSION,
         builtAt: new Date().toISOString(),
       }),
@@ -52,7 +52,7 @@ export const createVersion = async () => {
 export const markVersionAsBuilt = async (versionId: number) => {
   const versionResp = await axios
     .put(
-      `${VERITY_URL}/versions/${versionId}`,
+      `${VERITY_URL}/api/versions/${versionId}`,
       {
         builtAt: new Date().toISOString(),
       },
