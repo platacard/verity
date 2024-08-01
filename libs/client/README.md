@@ -7,7 +7,7 @@ This library provides a client for the Verity that allows you to load dependenci
 Import and initiate the client with the following code:
 
 ```typescript
-import { VerityClient } from '@platacard/verity-client';
+import { VerityClient } from '@verityjs/client';
 
 const config: VerityClientConfig = {
   verityUrl: /* URL of the Verity API instance */,
