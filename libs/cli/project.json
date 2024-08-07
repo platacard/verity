@@ -14,12 +14,12 @@
         "tsConfig": "libs/cli/tsconfig.lib.json",
         "assets": ["libs/cli/*.md"]
       }
-    },
-    "nx-release-publish": {
-      "dependsOn": ["build"],
-      "options": {
-        "packageRoot": "dist/{projectRoot}"
-      }
+    }
+  },
+  "nx-release-publish": {
+    "dependsOn": ["build"],
+    "options": {
+      "packageRoot": "dist/{projectRoot}"
     }
   }
 }
