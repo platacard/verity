@@ -75,5 +75,12 @@
         "createRelease": "github"
       }
     }
+  },
+  "targetDefaults": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    }
   }
 }

@@ -21,5 +21,13 @@
     "options": {
       "packageRoot": "dist/{projectRoot}"
     }
+  },
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
   }
 }
