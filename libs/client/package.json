@@ -1,6 +1,6 @@
 {
   "name": "@verityjs/client",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/platacard/verity"
