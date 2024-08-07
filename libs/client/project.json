@@ -20,12 +20,6 @@
     "dependsOn": ["build"],
     "options": {
       "packageRoot": "dist/{projectRoot}"
-    },
-    "version": {
-      "generatorOptions": {
-        "packageRoot": "dist/{projectRoot}",
-        "currentVersionResolver": "git-tag"
-      }
     }
   },
   "release": {
