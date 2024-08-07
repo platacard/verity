@@ -38,8 +38,11 @@ export class VerityClient {
     }
   }
 
+  /**
+   * TODO: Implement this method to allow for overriding dependencies in development.
+   * @private
+   */
   private getOverrides(): VerityDependency[] {
-    console.error('Overrides not implemented yet');
     return [];
   }
 }
