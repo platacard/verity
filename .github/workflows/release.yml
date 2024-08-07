@@ -23,6 +23,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
 
       - run: npx nx build cli
+      - run: npx nx build client
       - run: git config --global user.email "igor@katsuba.dev"
       - run: git config --global user.name "IKatsuba"
       - run: npx nx release --skip-publish
