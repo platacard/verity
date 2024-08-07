@@ -39,6 +39,7 @@ export class VerityClient {
   }
 
   private getOverrides(): VerityDependency[] {
+    console.error('Overrides not implemented yet');
     return [];
   }
 }
