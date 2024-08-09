@@ -20,7 +20,7 @@ const client = new VerityClient(config);
 
 ### Methods
 
-`loadDependencies` - Loads dependencies for current application version from the Verity API.
+`getDependencies` - Loads dependencies for current application version from the Verity API.
 
 ```typescript
 client
