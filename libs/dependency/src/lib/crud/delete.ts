@@ -23,6 +23,7 @@ export const markDependencyAsDeleted = async (id: string, user: User) => {
       action: AuditLogEventType.DEPENDENCY_DELETE,
       timestamp: new Date(),
       userId: user.id,
+      scopeId: updDependency.scopeId,
       appId: updDependency.dependantAppVersion.appId,
       versionId: updDependency.dependantAppVersionId,
       dependencyId: id,

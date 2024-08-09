@@ -16,22 +16,25 @@ export const markVersionAsDeleted = async (id: string, user: User) => {
       action: AuditLogEventType.VERSION_DELETE,
       timestamp: new Date(),
       userId: user.id,
+      scopeId: updVersion.scopeId,
       appId: updVersion.appId,
       versionId: id,
-    });
-
-    await prisma.dependency.updateMany({
-      where: {
-        OR: [{ dependantAppVersionId: id }, { dependencyAppVersionId: id }],
-      },
-      data: { deleted: true },
     });
 
     const affectedDependencies = await prisma.dependency.findMany({
       where: {
         OR: [{ dependantAppVersionId: id }, { dependencyAppVersionId: id }],
+        deleted: false,
       },
       include: { dependantAppVersion: true },
+    });
+
+    await prisma.dependency.updateMany({
+      where: {
+        OR: [{ dependantAppVersionId: id }, { dependencyAppVersionId: id }],
+        deleted: false,
+      },
+      data: { deleted: true },
     });
 
     for (const dependency of affectedDependencies) {
@@ -39,6 +42,7 @@ export const markVersionAsDeleted = async (id: string, user: User) => {
         action: AuditLogEventType.DEPENDENCY_DELETE,
         timestamp: new Date(),
         userId: user.id,
+        scopeId: dependency.scopeId,
         appId: dependency.dependantAppVersion.appId,
         versionId: dependency.dependantAppVersionId,
         dependencyId: dependency.id,

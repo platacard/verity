@@ -7,7 +7,7 @@ import { prisma } from '@verity/prisma';
 
 export const markAppAsDeleted = async (id: string, user: User) => {
   try {
-    await prisma.app.update({
+    const updApp = await prisma.app.update({
       where: { id },
       data: { deleted: true },
     });
@@ -15,40 +15,32 @@ export const markAppAsDeleted = async (id: string, user: User) => {
     await logEvent({
       action: AuditLogEventType.APPLICATION_DELETE,
       timestamp: new Date(),
+      scopeId: updApp.scopeId,
       userId: user.id,
       appId: id,
     });
 
-    await prisma.version.updateMany({
-      where: { appId: id },
-      data: { deleted: true },
-    });
-
     const affectedVersions = await prisma.version.findMany({
-      where: { appId: id },
+      where: { appId: id, deleted: false },
       select: { id: true },
     });
     const affectedVersionIds = affectedVersions.map((version) => version.id);
+
+    await prisma.version.updateMany({
+      where: { appId: id, deleted: false },
+      data: { deleted: true },
+    });
 
     for (const versionId of affectedVersionIds) {
       await logEvent({
         action: AuditLogEventType.VERSION_DELETE,
         timestamp: new Date(),
         userId: user.id,
+        scopeId: updApp.scopeId,
         appId: id,
         versionId,
       });
     }
-
-    await prisma.dependency.updateMany({
-      where: {
-        OR: [
-          { dependantAppVersionId: { in: affectedVersionIds } },
-          { dependencyAppVersionId: { in: affectedVersionIds } },
-        ],
-      },
-      data: { deleted: true },
-    });
 
     const affectedDependencies = await prisma.dependency.findMany({
       where: {
@@ -56,8 +48,20 @@ export const markAppAsDeleted = async (id: string, user: User) => {
           { dependantAppVersionId: { in: affectedVersionIds } },
           { dependencyAppVersionId: { in: affectedVersionIds } },
         ],
+        deleted: false,
       },
       select: { id: true, dependantAppVersionId: true },
+    });
+
+    await prisma.dependency.updateMany({
+      where: {
+        OR: [
+          { dependantAppVersionId: { in: affectedVersionIds } },
+          { dependencyAppVersionId: { in: affectedVersionIds } },
+        ],
+        deleted: false,
+      },
+      data: { deleted: true },
     });
 
     for (const dependency of affectedDependencies) {
@@ -65,6 +69,7 @@ export const markAppAsDeleted = async (id: string, user: User) => {
         action: AuditLogEventType.DEPENDENCY_DELETE,
         timestamp: new Date(),
         userId: user.id,
+        scopeId: updApp.scopeId,
         appId: id,
         versionId: dependency.dependantAppVersionId,
         dependencyId: dependency.id,
