@@ -7,7 +7,7 @@ import { prisma } from '@verity/prisma';
 
 export const markAppAsDeleted = async (id: string, user: User) => {
   try {
-    await prisma.app.update({
+    const updApp = await prisma.app.update({
       where: { id },
       data: { deleted: true },
     });
@@ -15,6 +15,7 @@ export const markAppAsDeleted = async (id: string, user: User) => {
     await logEvent({
       action: AuditLogEventType.APPLICATION_DELETE,
       timestamp: new Date(),
+      scopeId: updApp.scopeId,
       userId: user.id,
       appId: id,
     });
@@ -35,6 +36,7 @@ export const markAppAsDeleted = async (id: string, user: User) => {
         action: AuditLogEventType.VERSION_DELETE,
         timestamp: new Date(),
         userId: user.id,
+        scopeId: updApp.scopeId,
         appId: id,
         versionId,
       });
@@ -65,6 +67,7 @@ export const markAppAsDeleted = async (id: string, user: User) => {
         action: AuditLogEventType.DEPENDENCY_DELETE,
         timestamp: new Date(),
         userId: user.id,
+        scopeId: updApp.scopeId,
         appId: id,
         versionId: dependency.dependantAppVersionId,
         dependencyId: dependency.id,

@@ -16,6 +16,7 @@ export const markVersionAsDeleted = async (id: string, user: User) => {
       action: AuditLogEventType.VERSION_DELETE,
       timestamp: new Date(),
       userId: user.id,
+      scopeId: updVersion.scopeId,
       appId: updVersion.appId,
       versionId: id,
     });
@@ -39,6 +40,7 @@ export const markVersionAsDeleted = async (id: string, user: User) => {
         action: AuditLogEventType.DEPENDENCY_DELETE,
         timestamp: new Date(),
         userId: user.id,
+        scopeId: dependency.scopeId,
         appId: dependency.dependantAppVersion.appId,
         versionId: dependency.dependantAppVersionId,
         dependencyId: dependency.id,

@@ -79,6 +79,7 @@ export const createDependency = async (
       action: AuditLogEventType.DEPENDENCY_CREATE,
       timestamp: dependency.createdAt,
       userId: user.id,
+      scopeId: dependency.scopeId,
       appId: dependency.dependantAppVersion.appId,
       versionId: dependency.dependantAppVersionId,
       dependencyId: dependency.id,
