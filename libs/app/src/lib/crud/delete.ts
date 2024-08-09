@@ -20,16 +20,16 @@ export const markAppAsDeleted = async (id: string, user: User) => {
       appId: id,
     });
 
-    await prisma.version.updateMany({
-      where: { appId: id },
-      data: { deleted: true },
-    });
-
     const affectedVersions = await prisma.version.findMany({
-      where: { appId: id },
+      where: { appId: id, deleted: false },
       select: { id: true },
     });
     const affectedVersionIds = affectedVersions.map((version) => version.id);
+
+    await prisma.version.updateMany({
+      where: { appId: id, deleted: false },
+      data: { deleted: true },
+    });
 
     for (const versionId of affectedVersionIds) {
       await logEvent({
@@ -42,24 +42,26 @@ export const markAppAsDeleted = async (id: string, user: User) => {
       });
     }
 
-    await prisma.dependency.updateMany({
-      where: {
-        OR: [
-          { dependantAppVersionId: { in: affectedVersionIds } },
-          { dependencyAppVersionId: { in: affectedVersionIds } },
-        ],
-      },
-      data: { deleted: true },
-    });
-
     const affectedDependencies = await prisma.dependency.findMany({
       where: {
         OR: [
           { dependantAppVersionId: { in: affectedVersionIds } },
           { dependencyAppVersionId: { in: affectedVersionIds } },
         ],
+        deleted: false,
       },
       select: { id: true, dependantAppVersionId: true },
+    });
+
+    await prisma.dependency.updateMany({
+      where: {
+        OR: [
+          { dependantAppVersionId: { in: affectedVersionIds } },
+          { dependencyAppVersionId: { in: affectedVersionIds } },
+        ],
+        deleted: false,
+      },
+      data: { deleted: true },
     });
 
     for (const dependency of affectedDependencies) {

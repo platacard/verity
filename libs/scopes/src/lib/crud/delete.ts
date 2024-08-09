@@ -24,13 +24,13 @@ export const markScopeAsDeleted = async (id: string, user: User) => {
     // Marks all Apps associated with the scope as deleted
 
     const affectedApps = await prisma.app.findMany({
-      where: { scopeId: id },
+      where: { scopeId: id, deleted: false },
       select: { id: true },
     });
     const affectedAppIds = affectedApps.map(({ id }) => id);
 
     await prisma.app.updateMany({
-      where: { scopeId: id },
+      where: { scopeId: id, deleted: false },
       data: { deleted: true },
     });
 
@@ -47,12 +47,12 @@ export const markScopeAsDeleted = async (id: string, user: User) => {
     // Marks all Versions associated with the scope as deleted
 
     const affectedVersions = await prisma.version.findMany({
-      where: { scopeId: id },
+      where: { scopeId: id, deleted: false },
       select: { id: true, appId: true },
     });
 
     await prisma.version.updateMany({
-      where: { scopeId: id },
+      where: { scopeId: id, deleted: false },
       data: { deleted: true },
     });
 
@@ -70,7 +70,7 @@ export const markScopeAsDeleted = async (id: string, user: User) => {
     // Marks all Dependencies associated with the scope as deleted
 
     const affectedDependencies = await prisma.dependency.findMany({
-      where: { scopeId: id },
+      where: { scopeId: id, deleted: false },
       select: {
         id: true,
         dependantAppVersion: {
@@ -80,7 +80,7 @@ export const markScopeAsDeleted = async (id: string, user: User) => {
     });
 
     await prisma.dependency.updateMany({
-      where: { scopeId: id },
+      where: { scopeId: id, deleted: false },
       data: { deleted: true },
     });
 

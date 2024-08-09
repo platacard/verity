@@ -21,18 +21,20 @@ export const markVersionAsDeleted = async (id: string, user: User) => {
       versionId: id,
     });
 
-    await prisma.dependency.updateMany({
-      where: {
-        OR: [{ dependantAppVersionId: id }, { dependencyAppVersionId: id }],
-      },
-      data: { deleted: true },
-    });
-
     const affectedDependencies = await prisma.dependency.findMany({
       where: {
         OR: [{ dependantAppVersionId: id }, { dependencyAppVersionId: id }],
+        deleted: false,
       },
       include: { dependantAppVersion: true },
+    });
+
+    await prisma.dependency.updateMany({
+      where: {
+        OR: [{ dependantAppVersionId: id }, { dependencyAppVersionId: id }],
+        deleted: false,
+      },
+      data: { deleted: true },
     });
 
     for (const dependency of affectedDependencies) {
