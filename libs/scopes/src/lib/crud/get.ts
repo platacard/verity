@@ -12,9 +12,9 @@ export const getScopes = async () => {
       },
       include: {
         users: true,
-        apps: true,
-        versions: true,
-        dependencies: true,
+        apps: { where: { deleted: false } },
+        versions: { where: { deleted: false } },
+        dependencies: { where: { deleted: false } },
       },
     })) ?? [];
 
