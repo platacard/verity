@@ -8,7 +8,29 @@ on:
 permissions: write-all
 
 jobs:
-  main:
+  verity-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+      - uses: nrwl/nx-set-shas@v4
+
+      - run: git config --global user.email "igor@katsuba.dev"
+      - run: git config --global user.name "IKatsuba"
+      - run: npx nx release -y --verbose --skip-publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+
+  packages-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
