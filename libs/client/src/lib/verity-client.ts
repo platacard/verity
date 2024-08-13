@@ -29,17 +29,10 @@ export class VerityClient {
         return [];
       }
 
-      // TODO: merge with overrides from dev-tools package after it's implemented
-
       return (await response.json()) as VerityDependency[];
     } catch (error) {
       console.error('Failed to fetch dependencies due to network or other error', error);
       return [];
     }
-  }
-
-  private getOverrides(): VerityDependency[] {
-    console.error('Overrides not implemented yet');
-    return [];
   }
 }
