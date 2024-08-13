@@ -26,7 +26,7 @@ jobs:
 
       - run: git config --global user.email "igor@katsuba.dev"
       - run: git config --global user.name "IKatsuba"
-      - run: npx nx release -y --verbose --skip-publish
+      - run: npx nx release --verbose --skip-publish
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
 
