@@ -56,8 +56,8 @@ jobs:
 
       - run: git config --global user.email "igor@katsuba.dev"
       - run: git config --global user.name "IKatsuba"
-      - run: npm publish dist/libs/cli --access public
-      - run: npm publish dist/libs/client --access public
+      - run: npx nx release publish --registry=https://registry.npmjs.org
+
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
