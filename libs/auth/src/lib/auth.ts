@@ -16,6 +16,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Keycloak],
   session: { strategy: 'jwt' },
   callbacks: {
+    async jwt({ token, user, profile }) {
+      if (user && profile) {
+        const roleId = (profile.groups as Array<string>).includes(DefaultUserRoles.ADMIN)
+          ? DefaultUserRoles.ADMIN
+          : DefaultUserRoles.USER;
+
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { roleId },
+        });
+      }
+
+      return token;
+    },
     async signIn({ user, profile }) {
       if (user?.email && profile?.groups) {
         const validUserGroups: DefaultUserRoles[] = [];
@@ -30,20 +44,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       return false;
-    },
-    async jwt({ token, user, profile }) {
-      if (user && profile) {
-        const roleId = (profile.groups as Array<string>).includes(DefaultUserRoles.ADMIN)
-          ? DefaultUserRoles.ADMIN
-          : DefaultUserRoles.USER;
-
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { roleId },
-        });
-      }
-
-      return token;
     },
   },
 });

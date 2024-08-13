@@ -16,13 +16,13 @@ class PrometheusClient {
   ];
 
   constructor() {
-    for (const metric of this.additionalMetrics) {
-      this.register.registerMetric(metric);
-    }
-
     this.register.setDefaultLabels({
       app: 'verity',
     });
+
+    for (const metric of this.additionalMetrics) {
+      this.register.registerMetric(metric);
+    }
 
     collectDefaultMetrics({ register: this.register });
   }
