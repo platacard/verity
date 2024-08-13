@@ -58,14 +58,14 @@ export const CreateAppModal = ({
     }
   };
 
-  const handleNameChange = (name: string) => {
-    setResult((prev) => ({ ...prev, name }));
-  };
-
   const handleScopeChange = (scopeId: string) => {
     const scope = scopesList.find((scope) => scope.id === scopeId);
     setSelectedScope(scope || null);
     setResult((prev) => ({ ...prev, scopeId }));
+  };
+
+  const handleNameChange = (name: string) => {
+    setResult((prev) => ({ ...prev, name }));
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
