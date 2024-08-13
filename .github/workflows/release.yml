@@ -24,6 +24,9 @@ jobs:
       - run: npm ci
       - uses: nrwl/nx-set-shas@v4
 
+      - run: npx nx build cli
+      - run: npx nx build client
+
       - run: git config --global user.email "igor@katsuba.dev"
       - run: git config --global user.name "IKatsuba"
       - run: npx nx release --verbose --skip-publish
@@ -32,6 +35,8 @@ jobs:
 
   packages-release:
     runs-on: ubuntu-latest
+    needs:
+      - verity-release
     steps:
       - uses: actions/checkout@v4
         with:
