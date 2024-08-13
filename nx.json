@@ -72,7 +72,9 @@
       "conventionalCommits": true
     },
     "git": {
-      "commitMessage": "chore(verity): publish {version}"
+      "commitMessage": "chore(verity): publish {version}",
+      "tag": true,
+      "push": true
     },
     "changelog": {
       "workspaceChangelog": {
