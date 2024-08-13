@@ -71,6 +71,7 @@
     "version": {
       "conventionalCommits": true
     },
+    "projectsRelationship": "independent",
     "git": {
       "commitMessage": "chore(verity): publish {version}",
       "tag": true,
