@@ -31,12 +31,12 @@ class PrometheusClient {
     return this.register.metrics();
   }
 
-  public resetMetrics(): void {
-    this.register.resetMetrics();
-  }
-
   public getContentType(): string {
     return this.register.contentType;
+  }
+
+  public resetMetrics(): void {
+    this.register.resetMetrics();
   }
 }
 

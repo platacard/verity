@@ -7,9 +7,9 @@ export enum VerityCiContextKeys {
 
 export const validateEnv = () => {
   console.log('Validating environment variables...');
-  const missingVariables = Object.values(VerityCiContextKeys).filter((key) => !process.env[key]);
+  const missingVars = Object.values(VerityCiContextKeys).filter((key) => !process.env[key]);
 
-  if (missingVariables.length) {
-    throw new Error(`Missing environment variables: ${missingVariables.join(', ')}`);
+  if (missingVars.length) {
+    throw new Error(`Missing environment variables: ${missingVars.join(', ')}`);
   }
 };
