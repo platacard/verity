@@ -1,5 +1,3 @@
-import { NextResponse } from 'next/server';
-
 import { metrics } from '@verity/metrics';
 
 export const GET = async () => {
@@ -7,7 +5,7 @@ export const GET = async () => {
 
   metrics.resetMetrics();
 
-  return NextResponse.json(resp, {
+  return new Response(resp, {
     status: 200,
     headers: {
       'Content-Type': metrics.getContentType(),
