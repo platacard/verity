@@ -24,3 +24,9 @@ export const parseJwt = <T>(token: string): T | null => {
     return null;
   }
 };
+
+export const getUserScopeIds = (
+  user: { scopes?: { id: string }[] } | null | undefined,
+): string[] => {
+  return (user?.scopes ?? []).map((s) => s.id);
+};

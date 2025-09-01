@@ -1,17 +1,12 @@
-import { redirect } from 'next/navigation';
-
 import { AdminPanel, Header } from '@verity/admin-panel';
-import { auth } from '@verity/auth/server';
+import { requireUser } from '@verity/auth/server';
 
 export default async function Component() {
-  const session = await auth();
-  if (!session) {
-    redirect('/api/auth/signin');
-  }
+  const user = await requireUser();
 
   return (
     <>
-      <Header />
+      <Header roleId={user?.roleId ?? undefined} />
       <AdminPanel />
     </>
   );

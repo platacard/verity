@@ -1,24 +1,13 @@
-import { redirect } from 'next/navigation';
-
 import { Header, UsersList } from '@verity/admin-panel';
-import { auth, getUserFromSession } from '@verity/auth/server';
-import { DefaultUserRoles } from '@verity/user-roles';
+import { requireAdmin } from '@verity/auth/server';
 
 export default async function UsersPage() {
-  const session = await auth();
+  const user = await requireAdmin();
 
-  if (!session) redirect('/api/auth/signin');
-
-  const user = await getUserFromSession(session);
-
-  if (user?.roleId === DefaultUserRoles.ADMIN) {
-    return (
-      <>
-        <Header />
-        <UsersList currentUser={user} />
-      </>
-    );
-  } else {
-    return <p>You do not have permissions to see this page</p>;
-  }
+  return (
+    <>
+      <Header roleId={user.roleId ?? undefined} />
+      <UsersList currentUser={user} />
+    </>
+  );
 }

@@ -16,3 +16,5 @@ export const GET = withAuth(
     return getUsers();
   },
 );
+
+// POST /api/users removed: users are managed in Keycloak only

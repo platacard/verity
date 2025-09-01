@@ -11,6 +11,9 @@ export const getUserFromSession = async (session: Session): Promise<UserWithRole
 
   return prisma.user.findUnique({
     where: { email: userEmail },
-    include: { role: true },
+    include: {
+      role: true,
+      scopes: { select: { id: true } },
+    },
   });
 };

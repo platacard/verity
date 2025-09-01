@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, ReactNode, useState } from 'react';
 
 import { Button } from '@verity/ui/button';
 import {
@@ -12,53 +12,39 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@verity/ui/dialog';
-import { Input } from '@verity/ui/input';
-import { Label } from '@verity/ui/label';
 
-export interface ModalProps {
-  readonly config: {
-    readonly buttonLabel: string;
-    readonly title: string;
-    readonly description: string;
-    readonly inputLabel: string;
-  };
-  readonly onFormSubmit: (value: string) => void;
+export interface InputModalProps {
+  readonly buttonLabel: string;
+  readonly title: string;
+  readonly description?: string;
+  readonly onFormSubmit: (values: Record<string, string>) => void;
+  readonly children: ReactNode;
 }
 
-export function InputModal({ config, onFormSubmit }: ModalProps) {
-  const [name, setName] = useState('');
+export function InputModal({ buttonLabel, title, description, onFormSubmit, children }: InputModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onFormSubmit(name);
+    const form = e.currentTarget;
+    const formData = new FormData(form) as unknown as Iterable<[string, string]>;
+    const values = Object.fromEntries(formData) as Record<string, string>;
+    onFormSubmit(values);
     setIsOpen(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>{config.buttonLabel}</Button>
+        <Button onClick={() => setIsOpen(true)}>{buttonLabel}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{config.title}</DialogTitle>
-          <DialogDescription>{config.description}</DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          {description ? <DialogDescription>{description}</DialogDescription> : null}
         </DialogHeader>
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-4 py-4">
-            <div>
-              <Label htmlFor="name" className="text-right">
-                {config.inputLabel}
-              </Label>
-              <Input
-                required={true}
-                id="name"
-                className="col-span-3"
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-          </div>
+          <InputModalContent>{children}</InputModalContent>
           <DialogFooter>
             <Button type="submit">OK</Button>
             <Button variant="ghost" onClick={() => setIsOpen(false)}>
@@ -69,4 +55,8 @@ export function InputModal({ config, onFormSubmit }: ModalProps) {
       </DialogContent>
     </Dialog>
   );
+}
+
+export function InputModalContent({ children }: { children: ReactNode }) {
+  return <div className="flex flex-col gap-4 py-4">{children}</div>;
 }

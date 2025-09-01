@@ -26,6 +26,20 @@
         }
       ],
       "realmRoles": ["admin"]
+    },
+    {
+      "username": "verity_user",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "User",
+      "lastName": "User",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "verity"
+        }
+      ],
+      "realmRoles": ["user"]
     }
   ]
 }

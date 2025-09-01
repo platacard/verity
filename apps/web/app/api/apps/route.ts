@@ -6,8 +6,8 @@ import { createApp, getApps } from '@verity/app';
 import { withAuth } from '@verity/auth/server';
 import { DynamicRouteData } from '@verity/shared/server';
 
-export const GET = withAuth(async () => {
-  return getApps();
+export const GET = withAuth(async (_req, _d, user) => {
+  return getApps(user);
 });
 
 export const POST = withAuth(
