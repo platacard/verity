@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react';
 
 import { ScopeExtended } from '@verity/scopes';
+import { Input } from '@verity/ui/input';
+import { Label } from '@verity/ui/label';
 import { DefaultUserRoles } from '@verity/user-roles';
 
 import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { ConfirmationModal } from './confirmation-modal';
-import { Input } from '@verity/ui/input';
-import { Label } from '@verity/ui/label';
 import { InputModal, InputModalContent } from './input-modal';
 
 export const ScopesComponent = ({ userRole }: { userRole: DefaultUserRoles }) => {

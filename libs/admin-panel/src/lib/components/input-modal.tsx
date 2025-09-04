@@ -21,7 +21,13 @@ export interface InputModalProps {
   readonly children: ReactNode;
 }
 
-export function InputModal({ buttonLabel, title, description, onFormSubmit, children }: InputModalProps) {
+export function InputModal({
+  buttonLabel,
+  title,
+  description,
+  onFormSubmit,
+  children,
+}: InputModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

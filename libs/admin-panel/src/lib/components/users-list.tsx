@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react';
 import { UserRole } from '@prisma/client';
 
 import { UserWithRole } from '@verity/auth';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@verity/ui/select';
-import { Table, TableBody, TableCell, TableHeader, TableRow } from '@verity/ui/table';
 import { Input } from '@verity/ui/input';
 import { Label } from '@verity/ui/label';
-import { useSuccessToast } from '../utils/show-success-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@verity/ui/select';
+import { Table, TableBody, TableCell, TableHeader, TableRow } from '@verity/ui/table';
 
 import { useFetchErrorToast } from '../utils/show-fetch-error';
+import { useSuccessToast } from '../utils/show-success-toast';
 
 export interface UsersListProps {
   currentUser: UserWithRole;

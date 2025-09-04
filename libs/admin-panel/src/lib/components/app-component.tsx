@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 
 import { AppWithVersionsAndDeps } from '@verity/app';
 import { Card, CardContent, CardHeader } from '@verity/ui/card';
+import { Input } from '@verity/ui/input';
+import { Label } from '@verity/ui/label';
 
 import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { ConfirmationModal } from './confirmation-modal';
-import { Input } from '@verity/ui/input';
-import { Label } from '@verity/ui/label';
 import { InputModal, InputModalContent } from './input-modal';
 import { VersionComponent } from './version-component';
 

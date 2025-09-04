@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
 import Link from 'next/link';
 
 import { LogOut, MountainIcon } from 'lucide-react';
+
 import { signOut } from '@verity/auth';
 
 export const Header = ({ roleId }: { roleId?: string }) => {
