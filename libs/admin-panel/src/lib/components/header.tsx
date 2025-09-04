@@ -1,8 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 
-import { MountainIcon } from 'lucide-react';
+import { LogOut, MountainIcon } from 'lucide-react';
 
-export const Header = () => {
+import { signOut } from '@verity/auth';
+
+export const Header = ({ roleId }: { roleId?: string }) => {
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center">
       <Link href="/" className="flex items-center justify-center" prefetch={false}>
@@ -13,8 +17,12 @@ export const Header = () => {
           { href: '/scopes', label: 'Scopes' },
           { href: '/apps', label: 'Applications' },
           { href: '/profile', label: 'Profile' },
-          { href: '/users', label: 'Users' },
-          { href: '/audit-logs', label: 'Audit Logs' },
+          ...(roleId === 'admin'
+            ? [
+                { href: '/users', label: 'Users' },
+                { href: '/audit-logs', label: 'Audit Logs' },
+              ]
+            : []),
         ].map((link) => (
           <Link
             key={link.href}
@@ -25,6 +33,18 @@ export const Header = () => {
             {link.label}
           </Link>
         ))}
+
+        <Link
+          href="/api/auth/signout"
+          onClick={(e) => {
+            e.preventDefault();
+            void signOut({ callbackUrl: '/' });
+          }}
+          className="text-sm font-medium hover:underline underline-offset-4 flex items-center gap-1"
+          prefetch={false}
+        >
+          <LogOut className="h-4 w-4" /> Log Out
+        </Link>
       </nav>
     </header>
   );

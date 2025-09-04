@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 
 import { AppWithVersionsAndDeps } from '@verity/app';
 import { Card, CardContent, CardHeader } from '@verity/ui/card';
+import { Input } from '@verity/ui/input';
+import { Label } from '@verity/ui/label';
 
 import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { ConfirmationModal } from './confirmation-modal';
-import { InputModal } from './input-modal';
+import { InputModal, InputModalContent } from './input-modal';
 import { VersionComponent } from './version-component';
 
 export interface AppComponentProps {
@@ -24,7 +26,8 @@ export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps
     setApplication(app);
   }, [app]);
 
-  const handleCreateVersion = async (version: string) => {
+  const handleCreateVersion = async (values: Record<string, string>) => {
+    const version = values.version;
     try {
       const response = await fetch('api/versions', {
         method: 'POST',
@@ -98,14 +101,20 @@ export function AppComponent({ app, onDelete, updateAppList }: AppComponentProps
           ))}
         </div>
         <InputModal
-          config={{
-            buttonLabel: '+ Add Version',
-            title: 'Add new Version',
-            description: 'Add new version of application',
-            inputLabel: 'Version:',
-          }}
+          buttonLabel="+ Add Version"
+          title="Add new Version"
+          description="Add new version of application"
           onFormSubmit={handleCreateVersion}
-        />
+        >
+          <InputModalContent>
+            <div>
+              <Label htmlFor="version" className="text-right">
+                Version
+              </Label>
+              <Input required id="version" name="version" className="col-span-3" />
+            </div>
+          </InputModalContent>
+        </InputModal>
       </CardContent>
     </Card>
   );

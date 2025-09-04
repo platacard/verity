@@ -1,13 +1,17 @@
-import * as apm from 'elastic-apm-node';
-
 import { logger } from '@verity/logger';
 
-if (process.env.ELASTIC_APM_ACTIVE === 'true') {
-  logger.info('Initiating elastic APM agent');
+export async function setupApm(): Promise<void> {
+  if (process.env.ELASTIC_APM_ACTIVE === 'true') {
+    logger.info('Initiating elastic APM agent');
 
-  apm.start();
+    // Use a runtime import to avoid bundlers trying to statically resolve optional deps
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
+    const apm = require('elastic-apm-node') as typeof import('elastic-apm-node');
 
-  logger.info(
-    `APM agent is started: ${apm.isStarted()}, service environment: ${apm.getServiceEnvironment()}`,
-  );
+    apm.start();
+
+    logger.info(
+      `APM agent is started: ${apm.isStarted()}, service environment: ${apm.getServiceEnvironment()}`,
+    );
+  }
 }

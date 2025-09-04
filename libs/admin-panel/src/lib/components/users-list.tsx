@@ -5,10 +5,13 @@ import { useEffect, useState } from 'react';
 import { UserRole } from '@prisma/client';
 
 import { UserWithRole } from '@verity/auth';
+import { Input } from '@verity/ui/input';
+import { Label } from '@verity/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@verity/ui/select';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@verity/ui/table';
 
 import { useFetchErrorToast } from '../utils/show-fetch-error';
+import { useSuccessToast } from '../utils/show-success-toast';
 
 export interface UsersListProps {
   currentUser: UserWithRole;
@@ -18,6 +21,7 @@ export const UsersList = ({ currentUser }: UsersListProps) => {
   const [userList, setUserList] = useState<UserWithRole[]>([]);
   const [roles, setRoles] = useState<UserRole[]>([]);
   const showFetchError = useFetchErrorToast();
+  const showUserAdded = useSuccessToast('User added');
 
   useEffect(() => {
     void fetchUsers();
@@ -73,7 +77,9 @@ export const UsersList = ({ currentUser }: UsersListProps) => {
 
   return (
     <div className="p-4">
-      <h1 className="font-bold">Users List</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="font-bold">Users List</h1>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>

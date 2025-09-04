@@ -22,6 +22,7 @@ export const createScope = async (data: z.infer<typeof createScopeSchema>, user:
       data: {
         name: parsedData.name,
         description: parsedData.description || null,
+        users: { connect: [{ id: user.id }] },
       },
     });
 

@@ -8,6 +8,7 @@ export const getUsers = async () => {
     const users: UserWithRole[] = await prisma.user.findMany({
       include: {
         role: true,
+        scopes: { select: { id: true } },
       },
     });
 

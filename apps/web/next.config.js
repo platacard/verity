@@ -11,6 +11,12 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
+  webpack: (config) => {
+    // Avoid bundling optional deps of elastic-apm-node by keeping it external in server build
+    if (!config.externals) config.externals = [];
+    config.externals.push({ 'elastic-apm-node': 'commonjs elastic-apm-node' });
+    return config;
+  },
   nx: {
     // Set this to true if you would like to use SVGR
     // See: https://github.com/gregberge/svgr

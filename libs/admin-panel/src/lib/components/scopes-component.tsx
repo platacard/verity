@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 
 import { ScopeExtended } from '@verity/scopes';
+import { Input } from '@verity/ui/input';
+import { Label } from '@verity/ui/label';
 import { DefaultUserRoles } from '@verity/user-roles';
 
 import { useFetchErrorToast } from '../utils/show-fetch-error';
 import { ConfirmationModal } from './confirmation-modal';
-import { InputModal } from './input-modal';
+import { InputModal, InputModalContent } from './input-modal';
 
 export const ScopesComponent = ({ userRole }: { userRole: DefaultUserRoles }) => {
   const [scopes, setScopes] = useState<ScopeExtended[]>([]);
@@ -67,14 +69,20 @@ export const ScopesComponent = ({ userRole }: { userRole: DefaultUserRoles }) =>
       <div className="flex items-center justify-between">
         <h1 className="font-bold">Scopes</h1>
         <InputModal
-          config={{
-            buttonLabel: '+ Create Scope',
-            title: 'Create new Scope',
-            description: 'Create new scope',
-            inputLabel: 'Name:',
-          }}
-          onFormSubmit={handleAddScope}
-        />
+          buttonLabel="+ Create Scope"
+          title="Create new Scope"
+          description="Create new scope"
+          onFormSubmit={(values) => handleAddScope(values.name)}
+        >
+          <InputModalContent>
+            <div>
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input required id="name" name="name" className="col-span-3" />
+            </div>
+          </InputModalContent>
+        </InputModal>
       </div>
       <div className="mt-4">
         {scopes.map((scope) => (
@@ -93,9 +101,11 @@ export const ScopesComponent = ({ userRole }: { userRole: DefaultUserRoles }) =>
 
             <h2 className="text-lg font-bold">{scope.name}</h2>
             <p className="text-sm mt-2">ID: {scope.id}</p>
-            <p className="text-sm text-gray-500 mt-2">
-              Users: {scope.users?.map((user) => user.email + ', ')}
-            </p>
+            {userRole === DefaultUserRoles.ADMIN && (
+              <p className="text-sm text-gray-500 mt-2">
+                Users: {scope.users?.map((user) => user.email + ', ')}
+              </p>
+            )}
             <p className="text-sm text-gray-500 mt-2">
               Apps: {scope.apps?.map((app) => app.name + ', ')}
             </p>

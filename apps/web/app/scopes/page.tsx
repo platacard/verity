@@ -1,20 +1,13 @@
-import { redirect } from 'next/navigation';
-
 import { Header, ScopesComponent } from '@verity/admin-panel';
-import { auth, getUserFromSession } from '@verity/auth/server';
+import { requireUser } from '@verity/auth/server';
 import { DefaultUserRoles } from '@verity/user-roles';
 
 export default async function ScopesPage() {
-  const session = await auth();
-  if (!session) {
-    redirect('/api/auth/signin');
-  }
-
-  const user = await getUserFromSession(session);
+  const user = await requireUser();
 
   return (
     <>
-      <Header />
+      <Header roleId={user?.roleId ?? undefined} />
       <ScopesComponent userRole={user?.role?.id as DefaultUserRoles} />
     </>
   );
