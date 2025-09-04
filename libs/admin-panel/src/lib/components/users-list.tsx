@@ -42,8 +42,6 @@ export const UsersList = ({ currentUser }: UsersListProps) => {
     }
   };
 
-  // Add User functionality removed; users are managed in Keycloak
-
   const fetchRoles = async () => {
     try {
       const response = await fetch('api/user-roles');
